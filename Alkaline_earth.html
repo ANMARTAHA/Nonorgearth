@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Smart — Alkaline Earth Metals</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F151C;
+    --bg-raised:#161F29;
+    --bg-raised-2:#1C2733;
+    --ink:#EAEEF1;
+    --ink-dim:#93A5B3;
+    --ink-faint:#5C6E7C;
+    --line:#28353F;
+    --line-soft:#1E2932;
+
+    --ca:#E2582E;   /* calcium flame — brick orange   */
+    --ba:#6FBE7C;   /* barium flame — apple green      */
+    --sr:#D8495F;   /* strontium flame — crimson       */
+    --mg:#F2ECD9;   /* magnesium burn — bright white   */
+    --ra:#C084E0;   /* radium — radioactive glow       */
+
+    --accent: var(--ca);
+    --serif:'Fraunces', serif;
+    --sans:'Inter', system-ui, sans-serif;
+    --mono:'JetBrains Mono', monospace;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 1200px 600px at 15% -10%, rgba(226,88,46,.08), transparent 60%),
+      radial-gradient(ellipse 1000px 700px at 100% 0%, rgba(192,132,224,.06), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  ::selection{background:var(--accent); color:#0F151C;}
+
+  button{font-family:inherit; cursor:pointer;}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    max-width:1100px;
+    margin:0 auto;
+    padding:64px 28px 40px;
+  }
+  .hero-top{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+    border-bottom:1px solid var(--line);
+    padding-bottom:36px;
+  }
+  .hero-mark{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:.14em;
+    color:var(--ink-dim);
+  }
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:clamp(48px, 8vw, 92px);
+    line-height:.94;
+    margin:10px 0 0;
+    font-optical-sizing:auto;
+  }
+  .hero h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--accent);
+    transition:color .3s;
+  }
+  .hero p.sub{
+    max-width:46ch;
+    color:var(--ink-dim);
+    font-size:16px;
+    margin:16px 0 0;
+  }
+  .cell-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+  .el-cell{
+    width:64px; height:64px;
+    border:1px solid var(--line);
+    background:var(--bg-raised);
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    font-family:var(--mono);
+  }
+  .el-cell .z{ font-size:9px; color:var(--ink-faint); align-self:flex-start; margin:5px 0 0 6px;}
+  .el-cell .sym{ font-size:19px; font-weight:600; margin-top:-4px;}
+  .el-cell .name{ font-size:8px; color:var(--ink-dim); letter-spacing:.03em; margin-top:2px;}
+
+  /* ---------- NAV / TABS ---------- */
+  .tabs{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 28px;
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:10px;
+    position:sticky;
+    top:14px;
+    z-index:40;
+  }
+  .tab{
+    background:rgba(22,31,41,.9);
+    backdrop-filter:blur(6px);
+    border:1px solid var(--line);
+    border-bottom:3px solid transparent;
+    padding:12px 14px 10px;
+    text-align:left;
+    color:var(--ink-dim);
+    transition:border-color .2s, color .2s, background .2s;
+  }
+  .tab .code{ font-family:var(--mono); font-size:10px; letter-spacing:.1em; opacity:.7;}
+  .tab .label{ font-family:var(--serif); font-size:16px; color:var(--ink); margin-top:3px; display:block;}
+  .tab.is-active{
+    border-bottom-color:var(--tab-accent, var(--ca));
+    color:var(--tab-accent, var(--ca));
+    background:var(--bg-raised);
+  }
+  .tab.is-active .label{ color:var(--ink);}
+  .tab:hover{ color:var(--ink); }
+
+  /* ---------- PANELS ---------- */
+  main{ max-width:1100px; margin:0 auto; padding:34px 28px 110px;}
+  .panel{ display:none; animation:rise .35s ease; }
+  .panel.is-active{ display:block; }
+  @keyframes rise{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+  .panel-head{
+    display:flex; align-items:baseline; gap:14px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:16px; margin-bottom:28px;
+    flex-wrap:wrap;
+  }
+  .panel-head h2{
+    font-family:var(--serif); font-weight:600;
+    font-size:clamp(28px,4vw,38px); margin:0;
+  }
+  .panel-head .tag{
+    font-family:var(--mono); font-size:11px;
+    color:var(--panel-accent);
+    border:1px solid var(--panel-accent);
+    padding:3px 8px;
+  }
+  .panel-head p{ color:var(--ink-dim); margin:6px 0 0; max-width:60ch; font-size:14.5px; flex-basis:100%;}
+
+  #overview{ --panel-accent:var(--ca); }
+  #diagrams{ --panel-accent:var(--ba); }
+  #minimap{  --panel-accent:var(--sr); }
+  #flashcards{ --panel-accent:var(--mg); }
+  #quiz{ --panel-accent:var(--ra); }
+
+  /* ---------- OVERVIEW ---------- */
+  .ov-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .ov-card{
+    background:var(--bg-raised);
+    padding:20px 22px;
+  }
+  .ov-card h3{
+    font-family:var(--mono); font-size:12px; letter-spacing:.06em;
+    color:var(--ca); margin:0 0 12px; text-transform:none;
+  }
+  .ov-card ul{ margin:0; padding-left:18px; font-size:14px; color:var(--ink); }
+  .ov-card li{ margin-bottom:8px; }
+  .ov-card li::marker{ color:var(--ink-faint); }
+  .ov-card b{ color:var(--ink); font-weight:600; }
+  .ov-card .note{ color:var(--ink-dim); }
+
+  /* ---------- DIAGRAMS ---------- */
+  .dg-block{
+    border:1px solid var(--line);
+    background:var(--bg-raised);
+    padding:24px;
+    margin-bottom:22px;
+  }
+  .dg-block h3{
+    font-family:var(--serif); font-size:20px; margin:0 0 4px;
+  }
+  .dg-block .hint{ color:var(--ink-faint); font-size:12.5px; margin:0 0 18px; }
+
+  .trend-row{ display:flex; align-items:center; gap:0; flex-wrap:wrap; }
+  .trend-node{
+    background:var(--bg-raised-2);
+    border:1px solid var(--line);
+    padding:10px 14px;
+    font-family:var(--mono); font-size:13px;
+    color:var(--ink-dim);
+    text-align:center; min-width:64px;
+  }
+  .trend-node .z2{ font-size:9px; color:var(--ink-faint); display:block;}
+  .trend-node.is-picked{ border-color:var(--ba); color:var(--ba); background:rgba(111,190,124,.08); }
+  .trend-arrow{ color:var(--ink-faint); padding:0 6px; font-size:13px; }
+  .detail-box{
+    margin-top:16px;
+    border-left:2px solid var(--ba);
+    padding:12px 16px;
+    background:var(--bg-raised-2);
+    font-size:14px;
+    color:var(--ink);
+    min-height:24px;
+  }
+  .detail-box.muted{ color:var(--ink-faint); font-style:italic; }
+
+  .flow{ display:flex; align-items:center; flex-wrap:wrap; gap:6px; }
+  .flow-node{
+    border:1px solid var(--line);
+    background:var(--bg-raised-2);
+    padding:10px 14px;
+    font-size:13px;
+    cursor:pointer;
+    transition:border-color .2s,color .2s;
+  }
+  .flow-node:hover, .flow-node.is-picked{ border-color:var(--ba); color:var(--ba); }
+  .flow-sep{ color:var(--ink-faint); }
+
+  .cycle{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:10px;
+  }
+  .cycle-node{
+    border:1px solid var(--line);
+    background:var(--bg-raised-2);
+    padding:14px;
+    font-size:13px;
+    text-align:left;
+    color:var(--ink-dim);
+  }
+  .cycle-node .n{ font-family:var(--mono); font-size:11px; color:var(--sr); display:block; margin-bottom:6px;}
+  .cycle-node:hover, .cycle-node.is-picked{ border-color:var(--sr); color:var(--ink); }
+
+  table.mini{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  table.mini th{ text-align:left; font-family:var(--mono); font-size:10.5px; color:var(--ink-faint); font-weight:500; padding:8px 10px; border-bottom:1px solid var(--line); }
+  table.mini td{ padding:9px 10px; border-bottom:1px solid var(--line-soft); color:var(--ink-dim); }
+  table.mini tr:hover td{ color:var(--ink); background:rgba(111,190,124,.05); }
+  table.mini td b{ color:var(--ink); font-weight:600; }
+
+  /* ---------- MINI MAP ---------- */
+  .mm-wrap{ display:grid; grid-template-columns:320px 1fr; gap:0; border:1px solid var(--line); min-height:520px; }
+  .mm-list{ border-right:1px solid var(--line); max-height:640px; overflow-y:auto; }
+  .mm-item{
+    display:block; width:100%; text-align:left;
+    background:none; border:none; border-bottom:1px solid var(--line-soft);
+    color:var(--ink-dim); padding:13px 18px; font-size:13.5px;
+    display:flex; justify-content:space-between; gap:10px; align-items:center;
+  }
+  .mm-item .grp{ font-family:var(--mono); font-size:9.5px; color:var(--ink-faint); }
+  .mm-item:hover{ color:var(--ink); background:var(--bg-raised); }
+  .mm-item.is-picked{ color:var(--sr); background:var(--bg-raised); border-left:3px solid var(--sr); padding-left:15px; }
+  .mm-reader{ padding:28px 30px; background:var(--bg-raised); }
+  .mm-reader .rk{ font-family:var(--mono); font-size:11px; color:var(--sr); letter-spacing:.06em; }
+  .mm-reader h3{ font-family:var(--serif); font-size:26px; margin:8px 0 16px; }
+  .mm-reader p{ color:var(--ink); font-size:15px; margin:0; max-width:62ch; }
+  .mm-reader .placeholder{ color:var(--ink-faint); font-style:italic; }
+
+  /* ---------- FLASHCARDS ---------- */
+  .fc-filters{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:22px; }
+  .fc-filter{
+    background:none; border:1px solid var(--line); color:var(--ink-dim);
+    padding:7px 14px; font-size:12.5px; font-family:var(--mono);
+  }
+  .fc-filter.is-active{ border-color:var(--panel-accent); color:var(--panel-accent); }
+  .fc-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:14px; align-items:start; }
+  .fc-card{ perspective:1200px; height:210px; }
+  .fc-card.is-hidden{ display:none; }
+  .fc-inner{
+    position:relative; width:100%; height:100%;
+    transform-style:preserve-3d; transition:transform .5s cubic-bezier(.22,1,.36,1);
+    cursor:pointer;
+  }
+  .fc-card.flipped .fc-inner{ transform:rotateY(180deg); }
+  .fc-face{
+    position:absolute; inset:0; backface-visibility:hidden;
+    border:1px solid var(--line); padding:16px; display:flex; flex-direction:column; justify-content:space-between;
+    overflow:hidden;
+  }
+  .fc-face.front{ background:var(--bg-raised); }
+  .fc-face.back{ background:var(--bg-raised-2); transform:rotateY(180deg); border-color:var(--mg); }
+  .fc-tag{ font-family:var(--mono); font-size:9.5px; color:var(--ink-faint); letter-spacing:.05em; flex:0 0 auto; }
+  .fc-face.back .fc-tag{ color:var(--mg); }
+  .fc-q{ font-size:14.5px; color:var(--ink); line-height:1.4; overflow-y:auto; overflow-wrap:break-word; flex:1 1 auto; margin:6px 0; padding-right:4px; }
+  .fc-a{ font-size:13.5px; color:var(--ink); line-height:1.42; overflow-y:auto; overflow-wrap:break-word; flex:1 1 auto; margin:6px 0; padding-right:4px; }
+  .fc-hint{ font-size:10.5px; color:var(--ink-faint); text-align:right; flex:0 0 auto; }
+  .fc-q::-webkit-scrollbar, .fc-a::-webkit-scrollbar{ width:4px; }
+  .fc-q::-webkit-scrollbar-thumb, .fc-a::-webkit-scrollbar-thumb{ background:var(--line); border-radius:2px; }
+
+  /* ---------- QUIZ ---------- */
+  .quiz-bar{
+    display:flex; justify-content:space-between; align-items:center;
+    border:1px solid var(--line); background:var(--bg-raised);
+    padding:14px 20px; margin-bottom:24px; flex-wrap:wrap; gap:12px;
+  }
+  .quiz-score{ font-family:var(--mono); font-size:13px; color:var(--ink); }
+  .quiz-score b{ color:var(--ra); }
+  .btn-reset{
+    background:none; border:1px solid var(--ra); color:var(--ra);
+    padding:8px 16px; font-size:12px; font-family:var(--mono);
+  }
+  .btn-reset:hover{ background:var(--ra); color:#161020; }
+
+  .q-item{ border:1px solid var(--line); background:var(--bg-raised); padding:20px 22px; margin-bottom:12px; }
+  .q-item .q-num{ font-family:var(--mono); font-size:11px; color:var(--ink-faint); }
+  .q-item .q-text{ font-size:15px; margin:6px 0 16px; color:var(--ink); }
+  .q-opts{ display:grid; gap:8px; }
+  .q-opt{
+    text-align:left; background:var(--bg-raised-2); border:1px solid var(--line);
+    padding:10px 14px; font-size:13.5px; color:var(--ink-dim);
+  }
+  .q-opt:hover:not(:disabled){ border-color:var(--ra); color:var(--ink); }
+  .q-opt.correct{ border-color:var(--ba); color:var(--ba); background:rgba(111,190,124,.08); }
+  .q-opt.wrong{ border-color:var(--sr); color:var(--sr); background:rgba(216,73,95,.08); }
+  .q-opt:disabled{ cursor:default; }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:26px 28px 40px;
+    max-width:1100px; margin:0 auto;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px;
+    font-family:var(--mono); font-size:11.5px; color:var(--ink-faint);
+  }
+
+  @media (max-width:760px){
+    .tabs{ grid-template-columns:repeat(2,1fr); position:static; }
+    .mm-wrap{ grid-template-columns:1fr; }
+    .mm-list{ border-right:none; border-bottom:1px solid var(--line); max-height:280px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-mark">INORGANIC PHARMACEUTICAL CHEMISTRY — GROUP 2</div>
+      <h1>Study<br><em>Smart.</em></h1>
+      <p class="sub">Everything on the alkaline earth metals — beryllium through radium — reduced to what you actually need to recall in an exam.</p>
+    </div>
+    <div class="cell-row" id="heroCells"></div>
+  </div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <button class="tab" data-target="overview" style="--tab-accent:#E2582E;"><span class="code">01 · Ca</span><span class="label">Overview</span></button>
+  <button class="tab" data-target="diagrams" style="--tab-accent:#6FBE7C;"><span class="code">02 · Ba</span><span class="label">Diagrams</span></button>
+  <button class="tab" data-target="minimap" style="--tab-accent:#D8495F;"><span class="code">03 · Sr</span><span class="label">Mini Map</span></button>
+  <button class="tab" data-target="flashcards" style="--tab-accent:#F2ECD9;"><span class="code">04 · Mg</span><span class="label">Flashcards</span></button>
+  <button class="tab" data-target="quiz" style="--tab-accent:#C084E0;"><span class="code">05 · Ra</span><span class="label">Quiz Bank</span></button>
+</nav>
+
+<main>
+
+  <!-- ============ 1. OVERVIEW ============ -->
+  <section id="overview" class="panel is-active">
+    <div class="panel-head">
+      <h2>Overview</h2>
+      <span class="tag">the laws, not the lecture</span>
+      <p>Group 2 in one pass — identity, chemistry, and the three medically important members.</p>
+    </div>
+
+    <div class="ov-grid">
+      <div class="ov-card">
+        <h3>IDENTITY</h3>
+        <ul>
+          <li>Group 2 = <b>Be, Mg, Ca, Sr, Ba, Ra</b> (s-block, with the alkali metals)</li>
+          <li><b>2 valence electrons</b>, ns² configuration</li>
+          <li>Always lose both electrons → stable <b>M²⁺</b> cation</li>
+          <li>Too reactive to exist free in nature — found as cations in minerals</li>
+        </ul>
+      </div>
+      <div class="ov-card">
+        <h3>GROUP TREND</h3>
+        <ul>
+          <li>Electropositivity <b>increases down the group</b> (Mg → Ba)</li>
+          <li>Hydroxide solubility & thermal stability <b>increase</b> down the group</li>
+          <li>Oxides: general formula <b>MO</b>, generally basic</li>
+          <li>Peroxides exist for Mg, Ca, Sr, Ba — <b>not for Be</b></li>
+          <li>Hydroxides act as bases <b>except Be(OH)₂</b></li>
+        </ul>
+      </div>
+      <div class="ov-card">
+        <h3>HALIDES</h3>
+        <ul>
+          <li>Halides of Mg/Ca/Sr/Ba are <b>ionic</b>, sparingly soluble in water</li>
+          <li><b>MgCl₂, MgBr₂, MgI₂</b> are hygroscopic — absorb moisture</li>
+          <li>Anhydrous <b>CaCl₂</b> — strong water affinity → used as a <b>desiccant</b></li>
+        </ul>
+      </div>
+      <div class="ov-card">
+        <h3>BERYLLIUM — TOXIC, NOT THERAPEUTIC</h3>
+        <ul>
+          <li>Extremely poisonous — negligible clinical use</li>
+          <li>Inhalation → <b>Chronic Beryllium Disease (CBD)</b></li>
+          <li>Skin contact with soluble salts → severe irritation</li>
+        </ul>
+      </div>
+      <div class="ov-card">
+        <h3>MAGNESIUM — THE COFACTOR</h3>
+        <ul>
+          <li>Cofactor for <b>300+ enzymes</b>; activates ATP (Mg-ATP); stabilises DNA/RNA; core of chlorophyll</li>
+          <li>Most Mg salts soluble → <b>laxative</b>; Mg(OH)₂ suspension = <b>milk of magnesia</b> (antacid)</li>
+          <li>IV/IM <b>MgSO₄</b> = emergency drug for arrhythmia and <b>eclampsia</b></li>
+          <li>Absorbed in ileum/colon, excreted by kidneys — <b>reduce dose in renal impairment</b></li>
+          <li>Reduces absorption of iron, nitrofurantoin, proguanil, ACE inhibitors, aspirin, penicillamine</li>
+        </ul>
+      </div>
+      <div class="ov-card">
+        <h3>CALCIUM — THE MESSENGER</h3>
+        <ul>
+          <li>Most abundant inorganic element in the body (~1000 g); <b>99% in bone/teeth</b></li>
+          <li>Regulated by <b>PTH</b> — raises blood Ca²⁺ via bone resorption, gut uptake, renal reabsorption</li>
+          <li>Deficiency links: osteoporosis, hypertension, obesity</li>
+          <li><b>Renal osteodystrophy</b>: failed kidneys → low calcitriol → hypocalcemia + hyperphosphatemia → PTH-driven bone loss</li>
+          <li>Higher dietary calcium (~1200 mg/day) is now linked to <b>fewer</b> oxalate kidney stones, reversing older belief</li>
+          <li>Calcium carbonate = 40% elemental Ca; take with food; pair with Mg salts to offset constipation</li>
+          <li>Severe acute hypocalcemia → slow IV <b>10% calcium gluconate</b>, with ECG monitoring</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. DIAGRAMS ============ -->
+  <section id="diagrams" class="panel">
+    <div class="panel-head">
+      <h2>Diagrams</h2>
+      <span class="tag">click anything</span>
+      <p>Every figure from the material, rebuilt so you can click through it instead of just reading it.</p>
+    </div>
+
+    <div class="dg-block">
+      <h3>Electron configuration explorer</h3>
+      <p class="hint">Click an element to reveal its configuration and why it forms M²⁺.</p>
+      <div class="trend-row" id="configRow"></div>
+      <div class="detail-box muted" id="configDetail">Select an element above.</div>
+    </div>
+
+    <div class="dg-block">
+      <h3>Down-the-group property trend (Mg → Ba)</h3>
+      <p class="hint">Click a stop on the trend to see what increases as you descend Group 2.</p>
+      <div class="trend-row" id="trendRow"></div>
+      <div class="detail-box muted" id="trendDetail">Select a stop above.</div>
+    </div>
+
+    <div class="dg-block">
+      <h3>Vitamin D activation pathway</h3>
+      <p class="hint">Click each stage — this pathway is the root cause of renal osteodystrophy.</p>
+      <div class="flow" id="flowRow"></div>
+      <div class="detail-box muted" id="flowDetail">Select a stage above.</div>
+    </div>
+
+    <div class="dg-block">
+      <h3>The renal osteodystrophy cycle</h3>
+      <p class="hint">Four steps, feeding into each other. Click each to expand.</p>
+      <div class="cycle" id="cycleRow"></div>
+      <div class="detail-box muted" id="cycleDetail">Select a step above.</div>
+    </div>
+
+    <div class="dg-block">
+      <h3>Mineral sources at a glance</h3>
+      <p class="hint">Hover a row.</p>
+      <table class="mini">
+        <thead><tr><th>Element</th><th>Mineral</th><th>Formula</th></tr></thead>
+        <tbody>
+          <tr><td><b>Beryllium</b></td><td>Beryl (aquamarine, emerald)</td><td>Be₃Al₂[Si₆O₁₈]</td></tr>
+          <tr><td><b>Magnesium</b></td><td>Magnesite / Dolomite</td><td>MgCO₃ / MgCO₃·CaCO₃</td></tr>
+          <tr><td><b>Calcium</b></td><td>Limestone, chalk, marble</td><td>CaCO₃</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ 3. MINI MAP ============ -->
+  <section id="minimap" class="panel">
+    <div class="panel-head">
+      <h2>Mini Map</h2>
+      <span class="tag">click a title</span>
+      <p>Every topic from the material as a title — pick one and its full notes open on the right.</p>
+    </div>
+    <div class="mm-wrap">
+      <div class="mm-list" id="mmList"></div>
+      <div class="mm-reader" id="mmReader">
+        <span class="rk">TOPIC</span>
+        <h3>Choose a title</h3>
+        <p class="placeholder">Its notes will appear right here, in this same panel.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 4. FLASHCARDS ============ -->
+  <section id="flashcards" class="panel">
+    <div class="panel-head">
+      <h2>Flashcards</h2>
+      <span class="tag" id="fcCount">— cards</span>
+      <p>Tap a card to flip it. Pick a difficulty level — 60 easy, 50 medium, 40 hard — to drill accordingly.</p>
+    </div>
+    <div class="fc-filters" id="fcFilters"></div>
+    <div class="fc-grid" id="fcGrid"></div>
+  </section>
+
+  <!-- ============ 5. QUIZ ============ -->
+  <section id="quiz" class="panel">
+    <div class="panel-head">
+      <h2>Quiz Bank</h2>
+      <span class="tag" id="quizCount">— questions</span>
+      <p>Options are shuffled per question. Pick a difficulty level — 60 easy, 50 medium, 40 hard — then pick an answer; right and wrong are marked instantly.</p>
+    </div>
+    <div class="fc-filters" id="quizFilters"></div>
+    <div class="quiz-bar">
+      <div class="quiz-score">Score: <b id="scoreVal">0</b> / <span id="scoreTotal">0</span> answered</div>
+      <button class="btn-reset" id="resetQuiz">Reset quiz</button>
+    </div>
+    <div id="quizList"></div>
+  </section>
+
+</main>
+
+<footer>
+  <span>© Anmar Taha. All rights reserved.</span>
+  <span>Source: Inorganic Pharmaceutical Chemistry, 3rd Stage — Group 2 lecture notes.</span>
+</footer>
+
+<script>
+/* ============================================================
+   TAB NAVIGATION
+   ============================================================ */
+const tabs = document.querySelectorAll('.tab');
+const panels = document.querySelectorAll('.panel');
+tabs.forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    tabs.forEach(t=>t.classList.remove('is-active'));
+    panels.forEach(p=>p.classList.remove('is-active'));
+    tab.classList.add('is-active');
+    document.getElementById(tab.dataset.target).classList.add('is-active');
+    window.scrollTo({top:0, behavior:'smooth'});
+  });
+});
+tabs[0].classList.add('is-active');
+
+/* ============================================================
+   HERO ELEMENT CELLS
+   ============================================================ */
+const heroElements = [
+  {z:4, sym:'Be', name:'Beryllium'},
+  {z:12, sym:'Mg', name:'Magnesium'},
+  {z:20, sym:'Ca', name:'Calcium'},
+  {z:38, sym:'Sr', name:'Strontium'},
+  {z:56, sym:'Ba', name:'Barium'},
+  {z:88, sym:'Ra', name:'Radium'},
+];
+document.getElementById('heroCells').innerHTML = heroElements.map(e=>`
+  <div class="el-cell">
+    <span class="z">${e.z}</span>
+    <span class="sym">${e.sym}</span>
+    <span class="name">${e.name}</span>
+  </div>`).join('');
+
+/* ============================================================
+   DIAGRAM 1 — ELECTRON CONFIGURATION EXPLORER
+   ============================================================ */
+const configs = [
+  {sym:'Be', z:4, config:'1s² 2s²', note:'Loses the 2s² pair to form Be²⁺. Compounds are toxic — avoid in therapy.'},
+  {sym:'Mg', z:12, config:'1s² 2s² 2p⁶ 3s²', note:'Loses 3s² to form Mg²⁺. The biologically essential member of the group.'},
+  {sym:'Ca', z:20, config:'1s² 2s² 2p⁶ 3s² 3p⁶ 4s²', note:'Loses 4s² to form Ca²⁺. Most abundant inorganic cation in the body.'},
+  {sym:'Sr', z:38, config:'[Kr] 5s²', note:'Loses 5s² to form Sr²⁺. Chemically mimics calcium closely.'},
+  {sym:'Ba', z:56, config:'[Xe] 6s²', note:'Loses 6s² to form Ba²⁺. Forms a peroxide, unlike beryllium.'},
+  {sym:'Ra', z:88, config:'[Rn] 7s²', note:'Loses 7s² to form Ra²⁺. Radioactive — the outlier of the group.'},
+];
+const configRow = document.getElementById('configRow');
+const configDetail = document.getElementById('configDetail');
+configRow.innerHTML = configs.map((c,i)=>`
+  <button class="trend-node" data-i="${i}"><span class="z2">${c.z}</span>${c.sym}</button>`).join('');
+configRow.querySelectorAll('.trend-node').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    configRow.querySelectorAll('.trend-node').forEach(b=>b.classList.remove('is-picked'));
+    btn.classList.add('is-picked');
+    const c = configs[btn.dataset.i];
+    configDetail.classList.remove('muted');
+    configDetail.innerHTML = `<b>${c.sym}</b> — ${c.config}<br>${c.note}`;
+  });
+});
+
+/* ============================================================
+   DIAGRAM 2 — DOWN THE GROUP TREND
+   ============================================================ */
+const trendStops = [
+  {sym:'Mg', text:'Baseline for the biologically relevant range. Hydroxide is a weak base, moderate solubility.'},
+  {sym:'Ca', text:'More electropositive than Mg. Ca(OH)₂ more soluble and more thermally stable than Mg(OH)₂.'},
+  {sym:'Sr', text:'Reactivity keeps climbing. Peroxide forms readily; hydroxide solubility keeps increasing.'},
+  {sym:'Ba', text:'Most electropositive of the medically relevant set. Most soluble, most thermally stable hydroxide.'},
+];
+const trendRow = document.getElementById('trendRow');
+const trendDetail = document.getElementById('trendDetail');
+trendRow.innerHTML = trendStops.map((s,i)=>
+  (i>0?'<span class="trend-arrow">→</span>':'') +
+  `<button class="trend-node" data-i="${i}">${s.sym}</button>`
+).join('');
+trendRow.querySelectorAll('.trend-node').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    trendRow.querySelectorAll('.trend-node').forEach(b=>b.classList.remove('is-picked'));
+    btn.classList.add('is-picked');
+    const s = trendStops[btn.dataset.i];
+    trendDetail.classList.remove('muted');
+    trendDetail.textContent = s.text;
+  });
+});
+
+/* ============================================================
+   DIAGRAM 3 — VITAMIN D ACTIVATION PATHWAY
+   ============================================================ */
+const flowStages = [
+  {label:'Vitamin D', text:'Dietary or skin-synthesised vitamin D enters the pathway inactive.'},
+  {label:'Liver', text:'The liver performs the first hydroxylation, converting vitamin D to calcidiol.'},
+  {label:'Calcidiol', text:'The circulating storage form — not yet biologically active.'},
+  {label:'Kidney', text:'Healthy kidneys perform the final hydroxylation step. This step fails in renal disease.'},
+  {label:'Calcitriol', text:'The active hormone — promotes dietary Ca²⁺ uptake. If levels stay too low, PTH is released instead.'},
+];
+const flowRow = document.getElementById('flowRow');
+const flowDetail = document.getElementById('flowDetail');
+flowRow.innerHTML = flowStages.map((f,i)=>
+  (i>0?'<span class="flow-sep">→</span>':'') +
+  `<button class="flow-node" data-i="${i}">${f.label}</button>`
+).join('');
+flowRow.querySelectorAll('.flow-node').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    flowRow.querySelectorAll('.flow-node').forEach(b=>b.classList.remove('is-picked'));
+    btn.classList.add('is-picked');
+    flowDetail.classList.remove('muted');
+    flowDetail.textContent = flowStages[btn.dataset.i].text;
+  });
+});
+
+/* ============================================================
+   DIAGRAM 4 — RENAL OSTEODYSTROPHY CYCLE
+   ============================================================ */
+const cycleSteps = [
+  {n:'1 · LOW CALCIUM', text:'Reduced calcitriol means poor dietary calcium absorption, producing hypocalcemia.'},
+  {n:'2 · HIGH PHOSPHATE', text:'Failing kidneys cannot excrete phosphate, producing hyperphosphatemia.'},
+  {n:'3 · COMPLEXATION', text:'Excess phosphate binds remaining free calcium, dropping active calcium further.'},
+  {n:'4 · BONE RESORPTION', text:'The body senses low calcium and releases PTH, which strips calcium from bone — weakening it.'},
+];
+const cycleRow = document.getElementById('cycleRow');
+const cycleDetail = document.getElementById('cycleDetail');
+cycleRow.innerHTML = cycleSteps.map((c,i)=>`
+  <button class="cycle-node" data-i="${i}"><span class="n">${c.n}</span>${c.text.split('.')[0]}.</button>`).join('');
+cycleRow.querySelectorAll('.cycle-node').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    cycleRow.querySelectorAll('.cycle-node').forEach(b=>b.classList.remove('is-picked'));
+    btn.classList.add('is-picked');
+    cycleDetail.classList.remove('muted');
+    cycleDetail.textContent = cycleSteps[btn.dataset.i].text;
+  });
+});
+
+/* ============================================================
+   MINI MAP
+   ============================================================ */
+const mmTopics = [
+  {grp:'GROUP 2', title:'What makes a metal "alkaline earth"', text:'Group 2 of the periodic table — the second vertical column — is called the alkaline earth metals: beryllium, magnesium, calcium, strontium, barium, and radioactive radium.'},
+  {grp:'GROUP 2', title:'s-block chemistry', text:'Together with the alkali metals, alkaline earth metals are called s-block metals. They carry two electrons in an s-orbital outer shell, and their chemistry is defined by losing both electrons to form the stable M²⁺ cation.'},
+  {grp:'GROUP 2', title:'Where they occur in nature', text:'These metals are very reactive, so they are never found pure — only as M²⁺ cations in minerals. Beryllium occurs in beryl (aquamarine, emerald); magnesium in magnesite and dolomite; calcium in limestone, chalk, and marble.'},
+  {grp:'GROUP 2', title:'Reducing power and oxides', text:'Strong reducing power lets Group 2 elements form bivalent M²⁺ cations easily, and they grow more electropositive descending the group. Their oxides carry the general formula MO and are generally basic; peroxides exist for Mg, Ca, Sr and Ba, but not beryllium.'},
+  {grp:'GROUP 2', title:'Hydroxides and halides', text:'Every hydroxide except Be(OH)₂ behaves as a base, with water solubility and thermal stability both rising from Mg to Ba. Halides of Mg, Ca, Sr and Ba are ionic and only sparingly soluble; magnesium halides are hygroscopic, and anhydrous calcium chloride has such a strong affinity for water it is used as a desiccant.'},
+  {grp:'BERYLLIUM', title:'Why beryllium stays out of the clinic', text:'Beryllium and its compounds are extremely poisonous, which severely limits clinical use. Inhalation can cause serious respiratory disease, primarily Chronic Beryllium Disease (CBD), and soluble beryllium compounds cause severe skin irritation on contact.'},
+  {grp:'MAGNESIUM', title:'Magnesium\'s isotopes and salts', text:'Magnesium has three stable isotopes — ²⁴Mg (79% occurrence), ²⁵Mg, and ²⁶Mg — while ²⁸Mg is radioactive with a 21-hour half-life. Most magnesium salts are water soluble and act as a laxative; magnesium hydroxide has limited solubility, forming the suspension known as milk of magnesia, commonly used as a mild antacid base.'},
+  {grp:'MAGNESIUM', title:'Why Mg²⁺ matters at the cellular level', text:'Magnesium is essential cofactor for over 300 enzymatic processes including nucleic acid biochemistry. ATP must bind a magnesium ion — forming Mg-ATP — before it is biologically active. Mg²⁺ also stabilises the structure of DNA and RNA, raising their melting points, and forms the redox-active centre of chlorophyll, making it essential for photosynthesis.'},
+  {grp:'MAGNESIUM', title:'Getting magnesium from food', text:'Good dietary sources are green vegetables, nuts, whole grains, and milk. Because magnesium is water-soluble, boiling vegetables can leach it out. It is absorbed mainly in the ileum and colon, and excreted by the kidneys, which tightly regulate its levels.'},
+  {grp:'MAGNESIUM', title:'How much magnesium is in the body', text:'The average body holds about 24 g of magnesium. It is the fourth most abundant cation overall and the second most abundant cation in interstitial fluid. About 50% is stored in bone, with the remainder in muscle and soft tissue.'},
+  {grp:'MAGNESIUM', title:'When magnesium goes too low or too high', text:'Poor gut absorption makes magnesium salts useful as osmotic laxatives. Hypermagnesemia is rare, usually from kidney failure, and causes muscle weakness and arrhythmia. Hypomagnesemia can result from GI losses like diarrhea, alcoholism, or certain drugs, and often drags down calcium, potassium and sodium alongside it.'},
+  {grp:'MAGNESIUM', title:'Correcting a magnesium deficit', text:'Symptomatic hypomagnesemia is treated with IV or IM magnesium sulfate when levels are critically low, though IM injections are painful. For non-emergency cases, oral magnesium glycerophosphate tablets are used instead. Dose must be reduced in renal impairment, since the kidneys are the primary excretion route.'},
+  {grp:'MAGNESIUM', title:'Magnesium as an emergency drug', text:'IV magnesium sulfate is the emergency treatment for serious, life-threatening irregular heartbeats. It is also the standard emergency treatment for eclampsia, a life-threatening hypertensive disorder of pregnancy.'},
+  {grp:'MAGNESIUM', title:'Magnesium in the gut — antacids', text:'Magnesium hydroxide is the main ingredient in milk of magnesia; it neutralises stomach acid and acts as a laxative via an osmotic effect. Magnesium trisilicate is used for peptic ulcers, raising gastric pH and forming a protective gel over the stomach lining. Antacid formulations often combine magnesium salts (fast-acting) with aluminum salts (which cause constipation) to balance side effects.'},
+  {grp:'MAGNESIUM', title:'Magnesium\'s drug interactions', text:'Magnesium salts, especially in antacids, can reduce absorption of many co-administered drugs — including iron products, nitrofurantoin, proguanil, ACE inhibitors, aspirin, and penicillamine. A full medical history and careful timing of antacid dosing are needed to avoid these interactions.'},
+  {grp:'CALCIUM', title:'Calcium\'s role as a universal messenger', text:'Calcium has four stable isotopes (⁴⁰Ca, ⁴²Ca, ⁴⁴Ca). Ca²⁺ is the most abundant inorganic element in the human body, acting as a universal messenger and mediator for cardiac, skeletal, and smooth muscle contractions, and a critical factor in endocrine, neural, and renal blood pressure homeostasis.'},
+  {grp:'CALCIUM', title:'What calcium does inside and outside cells', text:'Calcium acts as a crucial cellular messenger for neurological and endocrinological processes, and is essential for forming bone and teeth. It also maintains a large intracellular-to-extracellular concentration gradient of roughly 1:10,000, which is critical for cellular responsiveness.'},
+  {grp:'CALCIUM', title:'Where the body keeps its calcium', text:'The body contains about 1000 g of calcium. Ninety-nine percent is stored extracellularly in bone and teeth, which act as a dynamic reservoir, and the remaining 1% circulates in the extracellular space — plasma and lymph.'},
+  {grp:'CALCIUM', title:'How calcium is regulated', text:'Calcium levels are tightly regulated by a balance between gut intake and renal excretion, with the skeleton acting as reservoir. Parathyroid hormone (PTH) is the key calciotropic hormone, raising blood calcium by increasing bone resorption, stimulating gut uptake, and promoting kidney reabsorption. Non-calciotropic hormones such as sex hormones and growth factors influence calcium balance without being directly controlled by it.'},
+  {grp:'CALCIUM', title:'Why modern diets fall short', text:'Dietary calcium intake has plummeted from an estimated 2000–3000 mg/day in the Stone Age to an average of just 600 mg/day today. This widespread deficiency is linked to greater risk of bone fragility (osteoporosis), high blood pressure, and colon cancer.'},
+  {grp:'CALCIUM', title:'Life stages that need more calcium', text:'Three periods demand higher calcium intake: childhood and adolescence, while bones build toward peak strength until about age 18; pregnancy and lactation, which build the fetal skeleton (about 30 g of calcium) and calcium-rich breast milk (160–300 mg/day); and old age, to counteract age-related bone loss.'},
+  {grp:'CALCIUM', title:'Calcium deficiency\'s wider reach', text:'Calcium deficiency is linked to major health issues beyond bone, including hypertension and obesity. Supplementation is not a standalone cure for either, but is a key part of a preventative strategy.'},
+  {grp:'CALCIUM', title:'Osteoporosis and peak bone density', text:'Bones act as a calcium reservoir, so adequate intake — especially during the first three decades of life — is crucial for building peak bone density and slowing age-related loss. Clinically, calcium is best viewed as a preventative strategy for aging, particularly for postmenopausal women, rather than a therapy for bone loss already lost.'},
+  {grp:'CALCIUM', title:'Calcium and blood pressure', text:'Calcium helps regulate blood pressure by influencing smooth muscle contraction — higher calcium levels can reduce vasoconstrictor tone and sympathetic nervous system activity. Supplementation can lower blood pressure, especially in salt-sensitive hypertension, but is not justified as a sole treatment for mild hypertension.'},
+  {grp:'CALCIUM', title:'Calcium and weight', text:'The hypothesis is that a low-calorie, high-calcium diet may fight obesity by increasing energy metabolism. Evidence suggests raising intake toward the recommended ~1200 mg/day may substantially reduce risk of being overweight, but larger long-term studies are still needed to confirm the link.'},
+  {grp:'CALCIUM', title:'Renal osteodystrophy — the root cause', text:'Renal osteodystrophy is a bone mineralisation deficiency from the body\'s inability to keep calcium and phosphate balanced during chronic kidney failure. The root cause is impaired vitamin D activation: healthy kidneys perform the final step converting calcidiol into active calcitriol, and in renal failure this step is depressed, leaving calcitriol too low.'},
+  {grp:'CALCIUM', title:'The vicious cycle of mineral imbalance', text:'Low calcitriol triggers a destructive chain: poor calcium absorption causes hypocalcemia; failing kidneys cannot excrete phosphate, causing hyperphosphatemia; the excess phosphate binds remaining free calcium, lowering it further; and the body senses low calcium, releasing PTH, which strips calcium from bone.'},
+  {grp:'CALCIUM', title:'Breaking the renal osteodystrophy cycle', text:'Treatment aims to break the cycle in three ways: controlling phosphate with phosphate binders and dialysis, replacing hormones with synthetic calcitriol to restore normal calcium absorption, and calcium supplementation to correct deficiencies and support bone.'},
+  {grp:'CALCIUM', title:'Calcium and kidney stones — a reversed belief', text:'Understanding has reversed with newer evidence. The old belief held that low calcium intake prevented kidney stones. New evidence shows low calcium actually increases stone risk by increasing oxalate absorption. The current conclusion: higher calcium intake (about 1200 mg/day) can cut recurrence by roughly 50%, and supplements do not raise risk in healthy people.'},
+  {grp:'CALCIUM', title:'Who needs calcium supplements', text:'Supplements are needed when dietary intake is insufficient, especially for children, pregnant women, and the elderly, who often have impaired absorption. Severe acute hypocalcemia is treated with a slow IV injection of 10% calcium gluconate, with careful monitoring of plasma Ca²⁺ and ECG.'},
+  {grp:'CALCIUM', title:'The common calcium salts', text:'Various salts are used as supplements: calcium carbonate, calcium chloride, calcium phosphate, calcium lactate, calcium aspartate, and calcium gluconate. Calcium carbonate is the most common and least expensive supplement.'},
+  {grp:'CALCIUM', title:'What to know about calcium carbonate', text:'Calcium carbonate contains 40% elemental calcium — 1000 mg of salt provides 400 mg of Ca²⁺, and labels usually list the elemental amount. It can be difficult to digest, causing gas and bloating from a reaction with stomach acid that produces CO₂. It should be taken with food, since absorption is pH-dependent, and co-administering it with magnesium salts helps prevent the constipation it commonly causes.'},
+];
+const mmList = document.getElementById('mmList');
+const mmReader = document.getElementById('mmReader');
+mmList.innerHTML = mmTopics.map((t,i)=>`
+  <button class="mm-item" data-i="${i}"><span>${t.title}</span><span class="grp">${t.grp}</span></button>`).join('');
+mmList.querySelectorAll('.mm-item').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    mmList.querySelectorAll('.mm-item').forEach(b=>b.classList.remove('is-picked'));
+    btn.classList.add('is-picked');
+    const t = mmTopics[btn.dataset.i];
+    mmReader.innerHTML = `<span class="rk">${t.grp}</span><h3>${t.title}</h3><p>${t.text}</p>`;
+  });
+});
+
+/* ============================================================
+   FLASHCARDS  (30+)
+   ============================================================ */
+const flashcards = [
+  {cat:'Level 1 — Easy', q:"Which elements make up Group 2, the alkaline earth metals?", a:"Beryllium, magnesium, calcium, strontium, barium, and radium."},
+  {cat:'Level 1 — Easy', q:"Group 2 is also known as which block of the periodic table (together with the alkali metals)?", a:"The s-block metals."},
+  {cat:'Level 1 — Easy', q:"How many valence electrons do alkaline earth metals have?", a:"Two."},
+  {cat:'Level 1 — Easy', q:"What type of orbital holds the two valence electrons of Group 2 metals?", a:"An s-orbital (ns²)."},
+  {cat:'Level 1 — Easy', q:"What charge does the stable cation formed by a Group 2 metal carry?", a:"2+ (M²⁺)."},
+  {cat:'Level 1 — Easy', q:"Why are alkaline earth metals never found as pure elemental metals in nature?", a:"They are very reactive."},
+  {cat:'Level 1 — Easy', q:"In what form do alkaline earth metals exist in nature?", a:"As cations (M²⁺) in various minerals."},
+  {cat:'Level 1 — Easy', q:"What mineral is beryllium commonly found in?", a:"Beryl (Be₃Al₂[Si₆O₁₈])."},
+  {cat:'Level 1 — Easy', q:"Name two gemstones that are varieties of beryl.", a:"Aquamarine and emerald."},
+  {cat:'Level 1 — Easy', q:"What is magnesite's chemical formula?", a:"MgCO₃."},
+  {cat:'Level 1 — Easy', q:"What is dolomite's chemical formula?", a:"MgCO₃·CaCO₃."},
+  {cat:'Level 1 — Easy', q:"In what natural materials is calcium commonly found?", a:"Limestone, chalk, and marble."},
+  {cat:'Level 1 — Easy', q:"What happens to electropositivity as you move down Group 2?", a:"It increases."},
+  {cat:'Level 1 — Easy', q:"What is the general formula for Group 2 metal oxides?", a:"MO."},
+  {cat:'Level 1 — Easy', q:"Are Group 2 metal oxides generally acidic or basic?", a:"Basic."},
+  {cat:'Level 1 — Easy', q:"Which Group 2 element does NOT form a peroxide?", a:"Beryllium."},
+  {cat:'Level 1 — Easy', q:"Which Group 2 hydroxide does NOT act as a base?", a:"Be(OH)₂."},
+  {cat:'Level 1 — Easy', q:"What happens to hydroxide solubility as you move down the group from Mg to Ba?", a:"It increases."},
+  {cat:'Level 1 — Easy', q:"What happens to the thermal stability of hydroxides from Mg to Ba?", a:"It increases."},
+  {cat:'Level 1 — Easy', q:"Are the halides of Mg, Ca, Sr, and Ba ionic or covalent compounds?", a:"Ionic."},
+  {cat:'Level 1 — Easy', q:"How soluble in water are the halides of Mg, Ca, Sr, and Ba?", a:"Sparingly soluble."},
+  {cat:'Level 1 — Easy', q:"What property do MgCl₂, MgBr₂, and MgI₂ share?", a:"They are hygroscopic (absorb moisture from the air)."},
+  {cat:'Level 1 — Easy', q:"What is anhydrous calcium chloride commonly used as?", a:"A drying agent (desiccant)."},
+  {cat:'Level 1 — Easy', q:"Are beryllium and its compounds toxic?", a:"Yes, extremely poisonous."},
+  {cat:'Level 1 — Easy', q:"What disease can result from inhaling beryllium?", a:"Chronic Beryllium Disease (CBD)."},
+  {cat:'Level 1 — Easy', q:"What happens with skin contact to soluble beryllium compounds?", a:"Severe skin irritation."},
+  {cat:'Level 1 — Easy', q:"What is the most abundant stable isotope of magnesium?", a:"²⁴Mg, about 79% occurrence."},
+  {cat:'Level 1 — Easy', q:"Which magnesium isotope is radioactive?", a:"²⁸Mg."},
+  {cat:'Level 1 — Easy', q:"What is the half-life of radioactive ²⁸Mg?", a:"21 hours."},
+  {cat:'Level 1 — Easy', q:"What effect do most magnesium salts have on the human body?", a:"They act as a laxative."},
+  {cat:'Level 1 — Easy', q:"What is another name for magnesium hydroxide suspension?", a:"Milk of magnesia."},
+  {cat:'Level 1 — Easy', q:"Magnesium is a cofactor for how many enzymatic processes?", a:"Over 300."},
+  {cat:'Level 1 — Easy', q:"What must ATP bind to in order to be biologically active?", a:"A magnesium ion (Mg-ATP)."},
+  {cat:'Level 1 — Easy', q:"What does Mg²⁺ stabilise in nucleic acids?", a:"The structure of DNA and RNA."},
+  {cat:'Level 1 — Easy', q:"What role does Mg²⁺ play in plants?", a:"It forms the redox-active centre of chlorophyll, essential for photosynthesis."},
+  {cat:'Level 1 — Easy', q:"Name two good dietary sources of magnesium.", a:"Green vegetables and nuts (also whole grains and milk)."},
+  {cat:'Level 1 — Easy', q:"Why can boiling vegetables cause magnesium loss?", a:"Because magnesium is water-soluble."},
+  {cat:'Level 1 — Easy', q:"Where is magnesium mainly absorbed in the gut?", a:"The ileum and colon."},
+  {cat:'Level 1 — Easy', q:"Which organ excretes magnesium and regulates its levels?", a:"The kidneys."},
+  {cat:'Level 1 — Easy', q:"About how much magnesium does the average human body contain?", a:"About 24 g."},
+  {cat:'Level 1 — Easy', q:"About what percentage of body magnesium is stored in bone?", a:"About 50%."},
+  {cat:'Level 1 — Easy', q:"What usually causes hypermagnesemia?", a:"Kidney failure."},
+  {cat:'Level 1 — Easy', q:"Name two symptoms of hypermagnesemia.", a:"Muscle weakness and arrhythmia."},
+  {cat:'Level 1 — Easy', q:"Name a common cause of hypomagnesemia.", a:"GI losses such as diarrhea (also alcoholism or certain drugs)."},
+  {cat:'Level 1 — Easy', q:"What is used to treat severe symptomatic hypomagnesemia?", a:"IV or IM magnesium sulfate (MgSO₄)."},
+  {cat:'Level 1 — Easy', q:"What oral magnesium form is used for non-emergency supplementation?", a:"Magnesium glycerophosphate tablets."},
+  {cat:'Level 1 — Easy', q:"What is IV magnesium sulfate used for in cardiology?", a:"Emergency treatment of serious arrhythmia."},
+  {cat:'Level 1 — Easy', q:"What pregnancy emergency is treated with IV MgSO₄?", a:"Eclampsia."},
+  {cat:'Level 1 — Easy', q:"What is the main ingredient in Milk of Magnesia?", a:"Magnesium hydroxide, Mg(OH)₂."},
+  {cat:'Level 1 — Easy', q:"What is magnesium trisilicate used to treat?", a:"Peptic ulcers."},
+  {cat:'Level 1 — Easy', q:"How many stable isotopes does calcium have, as stated in the lecture?", a:"Four (40Ca, 42Ca, 44Ca)."},
+  {cat:'Level 1 — Easy', q:"Is Ca²⁺ the most or least abundant inorganic element in the human body?", a:"The most abundant."},
+  {cat:'Level 1 — Easy', q:"About how much calcium does the human body contain?", a:"About 1000 g."},
+  {cat:'Level 1 — Easy', q:"What percentage of body calcium is stored in bones and teeth?", a:"About 99%."},
+  {cat:'Level 1 — Easy', q:"What is the key hormone that raises blood calcium levels?", a:"Parathyroid hormone (PTH)."},
+  {cat:'Level 1 — Easy', q:"About how much was estimated daily calcium intake in the Stone Age?", a:"2000–3000 mg/day."},
+  {cat:'Level 1 — Easy', q:"About what is average modern daily calcium intake?", a:"About 600 mg/day."},
+  {cat:'Level 1 — Easy', q:"Name one chronic disease linked to calcium deficiency.", a:"Osteoporosis (also hypertension or colon cancer)."},
+  {cat:'Level 1 — Easy', q:"Which calcium salt is the most common and least expensive supplement?", a:"Calcium carbonate."},
+  {cat:'Level 1 — Easy', q:"Which two organs balance calcium levels day to day, with the skeleton acting as the reservoir?", a:"The gut (intake) and the kidneys (excretion)."},
+  {cat:'Level 2 — Medium', q:"Which two properties of Group 2 hydroxides increase together as you descend the group from Mg to Ba?", a:"Water solubility and thermal stability."},
+  {cat:'Level 2 — Medium', q:"Why do Group 2 metals characteristically form M²⁺ cations rather than M⁺ or M³⁺?", a:"Because their chemistry is defined by strong reducing power and the loss of both ns² valence electrons."},
+  {cat:'Level 2 — Medium', q:"Based on the increasing electropositivity trend down Group 2, which metal is more reactive, Mg or Ba?", a:"Barium, since electropositivity increases going down the group."},
+  {cat:'Level 2 — Medium', q:"Why are magnesium halides described as hygroscopic while other Group 2 halides are simply described as sparingly soluble ionic compounds?", a:"MgCl₂, MgBr₂, and MgI₂ specifically absorb moisture from air, a distinct property beyond general ionic solubility."},
+  {cat:'Level 2 — Medium', q:"How does anhydrous CaCl₂'s use as a desiccant relate to the general halide solubility trend of the group?", a:"Despite Group 2 halides being only sparingly soluble, anhydrous CaCl₂ has an unusually strong affinity for water, making it useful for drying."},
+  {cat:'Level 2 — Medium', q:"What links beryllium's toxicity to its route of exposure?", a:"Inhalation causes Chronic Beryllium Disease, while skin contact with soluble beryllium compounds causes severe irritation — two different toxic effects from two different exposure routes."},
+  {cat:'Level 2 — Medium', q:"Why does magnesium's role in ATP activation matter for nearly every cell in the body?", a:"Because ATP must bind a magnesium ion (forming Mg-ATP) before it can be used in any enzymatic reaction."},
+  {cat:'Level 2 — Medium', q:"How are magnesium's roles in DNA/RNA stability and as an enzyme cofactor connected?", a:"Both stem from Mg²⁺ acting on nucleic acid biochemistry — as a cofactor for enzymatic processes and as a stabiliser of DNA/RNA structure."},
+  {cat:'Level 2 — Medium', q:"Why is magnesium described as both the fourth most abundant cation overall and the second most abundant in interstitial fluid?", a:"Its distribution differs by compartment — most magnesium is stored in bone, while a different ranking applies specifically to interstitial fluid."},
+  {cat:'Level 2 — Medium', q:"Why can magnesium salts act as both a laxative and, in overdose, a cause of hypermagnesemia?", a:"Poor gut absorption normally lets them work osmotically as laxatives, but if the kidneys fail to excrete the absorbed magnesium, blood levels can rise dangerously."},
+  {cat:'Level 2 — Medium', q:"Why must magnesium sulfate dosing be reduced in patients with renal impairment?", a:"Because the kidneys are the primary route of magnesium excretion, so impaired kidneys cannot clear it properly."},
+  {cat:'Level 2 — Medium', q:"What is the shared clinical rationale for using IV MgSO₄ in both arrhythmia and eclampsia?", a:"In both, it is used as an emergency treatment for a serious, life-threatening condition — cardiac in one case, hypertensive in the other."},
+  {cat:'Level 2 — Medium', q:"Why do antacid formulations often combine magnesium and aluminium salts?", a:"Magnesium salts act quickly but tend to cause diarrhea, while aluminium salts cause constipation, so combining them balances the side effects."},
+  {cat:'Level 2 — Medium', q:"How can magnesium-containing antacids interfere with other medications?", a:"They can reduce the absorption of concurrently taken drugs such as iron products, certain antibiotics, antimalarials, ACE inhibitors, aspirin, and penicillamine."},
+  {cat:'Level 2 — Medium', q:"Why should the timing of antacid administration be managed around other medicines?", a:"Because magnesium salts can reduce the absorption of many concurrently taken drugs, so a full medical history and dosing schedule must be considered."},
+  {cat:'Level 2 — Medium', q:"What is the relationship between calcium's intracellular:extracellular gradient and its role as a cellular messenger?", a:"The steep 1:10,000 gradient is what makes small changes in intracellular Ca²⁺ meaningful signals for processes like muscle contraction."},
+  {cat:'Level 2 — Medium', q:"How does the 99%/1% distribution of body calcium relate to its role as a reservoir?", a:"Because 99% sits in bone and teeth, this large store can be drawn on to maintain the small, tightly regulated 1% in the extracellular fluid."},
+  {cat:'Level 2 — Medium', q:"What is the connection between PTH's three actions and the goal of raising blood calcium?", a:"Increasing bone resorption, stimulating gut uptake, and promoting kidney reabsorption all funnel more calcium into the blood from three different sources."},
+  {cat:'Level 2 — Medium', q:"Why are calciotropic and non-calciotropic hormones described differently in calcium regulation?", a:"Calciotropic hormones like PTH directly regulate calcium levels, while non-calciotropic hormones (e.g. sex hormones, growth factors) influence calcium balance without being directly controlled by calcium levels."},
+  {cat:'Level 2 — Medium', q:"How does the fall in calcium intake from the Stone Age to today connect to modern chronic disease risk?", a:"The drop from ~2000–3000 mg/day to ~600 mg/day represents a widespread, permanent deficiency linked to osteoporosis, high blood pressure, and colon cancer."},
+  {cat:'Level 2 — Medium', q:"Why do childhood/adolescence, pregnancy/lactation, and old age all require increased calcium intake, despite being very different life stages?", a:"Each involves a distinct demand on the calcium reservoir — bone growth to peak strength, fetal/skeletal and breast-milk needs, and counteracting age-related bone loss."},
+  {cat:'Level 2 — Medium', q:"How much calcium is needed to build the fetal skeleton during pregnancy, and how does that compare with breast milk output?", a:"About 30 g accumulates in the fetal skeleton, while breast milk itself supplies roughly 160–300 mg of calcium per day."},
+  {cat:'Level 2 — Medium', q:"Why is calcium considered a preventative strategy for osteoporosis rather than a treatment?", a:"Because adequate intake in the first three decades of life builds peak bone density, which is more effective than trying to reverse already-lost bone."},
+  {cat:'Level 2 — Medium', q:"By what mechanism does calcium influence blood pressure?", a:"By influencing smooth muscle contraction, reducing vasoconstrictor tone and sympathetic nervous system activity."},
+  {cat:'Level 2 — Medium', q:"Why is calcium supplementation not recommended as a sole treatment for mild hypertension, even though it can lower blood pressure?", a:"Because its blood-pressure-lowering effect (especially in salt-sensitive hypertension) is real but not strong enough to replace standard antihypertensive treatment."},
+  {cat:'Level 2 — Medium', q:"What is the underlying hypothesis linking high dietary calcium to weight management?", a:"That a low-calorie, high-calcium diet may fight obesity by increasing energy metabolism."},
+  {cat:'Level 2 — Medium', q:"What is the root cause that links kidney failure to bone disease in renal osteodystrophy?", a:"Impaired activation of vitamin D — the kidneys can no longer convert calcidiol into active calcitriol."},
+  {cat:'Level 2 — Medium', q:"Trace the two-step activation pathway of vitamin D described in the lecture.", a:"The liver converts vitamin D into calcidiol, and the kidney converts calcidiol into calcitriol."},
+  {cat:'Level 2 — Medium', q:"Why does low calcitriol lead to poor dietary calcium absorption?", a:"Because calcitriol is what promotes dietary uptake of Ca²⁺ in the gut, so low levels reduce absorption."},
+  {cat:'Level 2 — Medium', q:"How does hyperphosphatemia arise in renal osteodystrophy, and what does it do to calcium?", a:"Failing kidneys cannot excrete phosphate, so blood phosphate rises and binds free calcium (complexation), lowering active calcium further."},
+  {cat:'Level 2 — Medium', q:"Why does PTH release worsen bone health in renal osteodystrophy even though it raises blood calcium?", a:"PTH strips calcium from bone to correct low blood calcium, which weakens the bone structure over time."},
+  {cat:'Level 2 — Medium', q:"What three strategies together break the vicious cycle of renal osteodystrophy?", a:"Controlling phosphate (binders/dialysis), replacing hormones (synthetic calcitriol), and calcium supplementation."},
+  {cat:'Level 2 — Medium', q:"Explain the shift in medical opinion about calcium intake and kidney stones.", a:"It was once believed low calcium intake prevented stones, but evidence now shows low calcium increases oxalate absorption and stone risk, while higher intake (~1200 mg/day) reduces recurrence."},
+  {cat:'Level 2 — Medium', q:"Why doesn't higher calcium intake increase kidney stone risk in healthy people, based on the current view?", a:"Because adequate calcium binds oxalate in the gut, reducing its absorption, rather than increasing stone-forming calcium oxalate."},
+  {cat:'Level 2 — Medium', q:"What determines how much elemental calcium a patient actually receives from a calcium carbonate tablet?", a:"Calcium carbonate is 40% elemental calcium, so a 1000 mg tablet provides only 400 mg of Ca²⁺."},
+  {cat:'Level 2 — Medium', q:"Why does calcium carbonate need to be taken with food?", a:"Because its absorption is pH-dependent and improves with food-stimulated stomach acid."},
+  {cat:'Level 2 — Medium', q:"Why is calcium carbonate sometimes co-administered with magnesium salts?", a:"To prevent the constipation that calcium carbonate commonly causes."},
+  {cat:'Level 2 — Medium', q:"What causes the gas and bloating side effect of calcium carbonate?", a:"Its reaction with stomach acid, which produces CO₂."},
+  {cat:'Level 2 — Medium', q:"Why is severe acute hypocalcemia treated with a slow IV infusion rather than a rapid bolus of calcium gluconate?", a:"Because plasma Ca²⁺ and ECG must be carefully monitored to avoid cardiac complications from too rapid a rise."},
+  {cat:'Level 2 — Medium', q:"What three groups of people are specifically noted as having higher calcium needs requiring supplementation?", a:"Children, pregnant women, and the elderly (due to impaired absorption)."},
+  {cat:'Level 2 — Medium', q:"How does the general trend that Group 2 oxides are basic connect to their formula MO?", a:"Each metal forms a simple 1:1 oxide with oxygen (MO), and this ionic metal oxide reacts as a base."},
+  {cat:'Level 2 — Medium', q:"Compare beryllium's behaviour to the rest of Group 2 in terms of hydroxide basicity and peroxide formation.", a:"Beryllium is the exception in both cases: Be(OH)₂ does not act as a base, and beryllium does not form a peroxide, unlike Mg, Ca, Sr, and Ba."},
+  {cat:'Level 2 — Medium', q:"Why is magnesium's biological role in photosynthesis relevant to a lecture on human pharmaceutical chemistry?", a:"It illustrates Mg²⁺'s broader chemical role as a redox-active centre, paralleling its essential enzymatic and ATP-binding roles in the human body."},
+  {cat:'Level 2 — Medium', q:"What is the link between magnesium's laxative effect and its poor gut absorption?", a:"Poorly absorbed magnesium salts remain in the gut and draw water in by an osmotic effect, producing a laxative action."},
+  {cat:'Level 2 — Medium', q:"How does the mechanism of magnesium hydroxide as an antacid resemble its mechanism as a laxative?", a:"Both rely on limited gut absorption and drawing water into the intestine osmotically, in addition to neutralising stomach acid."},
+  {cat:'Level 2 — Medium', q:"Why would a doctor check a patient's full drug history before recommending a magnesium-based antacid?", a:"Because magnesium salts can reduce absorption of many other drugs (iron, certain antibiotics, antimalarials, ACE inhibitors, aspirin, penicillamine), so interactions must be managed."},
+  {cat:'Level 2 — Medium', q:"How does the 1:10,000 intracellular-to-extracellular calcium gradient connect to calcium's role in muscle contraction?", a:"The steep gradient means tiny calcium influxes can trigger large, rapid responses, underlying calcium's role as a universal messenger for cardiac, skeletal, and smooth muscle contraction."},
+  {cat:'Level 2 — Medium', q:"Why does the lecture describe calcium supplementation as 'not a standalone cure' for hypertension or obesity?", a:"Because while calcium deficiency is linked to these conditions, supplementation is only one part of a broader preventative strategy, not a complete treatment."},
+  {cat:'Level 2 — Medium', q:"How are the biological handling of magnesium and calcium similar in terms of skeletal storage?", a:"Both minerals rely on bone as a major reservoir — about 50% of body magnesium and about 99% of body calcium are stored there."},
+  {cat:'Level 2 — Medium', q:"Why does old age create an increased demand for calcium despite bones no longer growing?", a:"Increased intake is needed to counteract age-related changes in calcium metabolism that lead to bone loss."},
+  {cat:'Level 3 — Hard', q:"Trace the full sequence of events, starting from chronic kidney failure, that leads to weakened bone structure in renal osteodystrophy.", a:"Kidney failure impairs conversion of calcidiol to calcitriol → low calcitriol reduces gut calcium absorption (hypocalcemia) → failing kidneys also cannot excrete phosphate (hyperphosphatemia) → excess phosphate complexes with free calcium, lowering it further → the body responds to hypocalcemia by releasing PTH, which strips calcium from bone → bone structure weakens."},
+  {cat:'Level 3 — Hard', q:"A patient with kidney failure has both low blood calcium and high blood phosphate. Explain why treating only the calcium deficiency without addressing phosphate would be insufficient.", a:"Untreated hyperphosphatemia would continue to complex with any added calcium, keeping active calcium low and continuing to trigger PTH-driven bone resorption, so phosphate must be controlled (binders/dialysis) alongside calcium and calcitriol replacement to break the cycle."},
+  {cat:'Level 3 — Hard', q:"Explain why calcium and phosphate homeostasis in renal osteodystrophy is described as a 'vicious cycle' rather than a simple deficiency.", a:"Each abnormality reinforces the next: low calcitriol causes hypocalcemia, hyperphosphatemia from renal failure complexes remaining calcium and worsens hypocalcemia, which triggers PTH-driven bone resorption — a self-perpetuating loop rather than a single static deficit."},
+  {cat:'Level 3 — Hard', q:"Compare the three treatment strategies for renal osteodystrophy and explain which underlying defect each one addresses.", a:"Phosphate binders/dialysis address excess phosphate (hyperphosphatemia and complexation); synthetic calcitriol addresses impaired vitamin D activation and poor gut calcium absorption; calcium supplementation directly corrects the calcium deficit and supports bone — together targeting all three points in the cycle."},
+  {cat:'Level 3 — Hard', q:"A patient on long-term magnesium-containing antacids is also taking an oral antibiotic and an ACE inhibitor. Explain the pharmacological concern and how it should be managed.", a:"Magnesium salts can reduce the absorption of many concurrently taken drugs, including certain antibiotics and ACE inhibitors, so a full medical history should be taken and the timing of antacid administration managed (e.g. separating doses) to avoid reduced efficacy of the other medicines."},
+  {cat:'Level 3 — Hard', q:"Explain why IM injections of magnesium sulfate, though effective for hypomagnesemia, are generally reserved for cases where IV access is unavailable.", a:"Although IM MgSO₄ is an accepted route for severe hypomagnesemia, IM injections are painful, so IV administration is generally preferred when access allows, with IM as a practical alternative."},
+  {cat:'Level 3 — Hard', q:"A patient with renal impairment requires magnesium sulfate for symptomatic hypomagnesemia. Explain the dosing dilemma this creates.", a:"The kidneys are the primary route of magnesium excretion, so in renal impairment the dose must be reduced to avoid accumulation and hypermagnesemia, even though the patient still needs correction of their low magnesium."},
+  {cat:'Level 3 — Hard', q:"Explain, at the level of ATP and DNA/RNA, why magnesium deficiency could plausibly disrupt cellular metabolism broadly rather than a single pathway.", a:"Because Mg²⁺ is required both for ATP to become biologically active (as Mg-ATP, the universal energy currency for enzymatic reactions) and for stabilising DNA/RNA structure, a deficiency would simultaneously impair energy-dependent reactions and nucleic acid-dependent processes across virtually all cells."},
+  {cat:'Level 3 — Hard', q:"Why might hypomagnesemia produce a cascade of other electrolyte disturbances rather than an isolated magnesium problem?", a:"Hypomagnesemia often leads to hypocalcemia, hypokalemia, and hyponatremia, suggesting magnesium plays a regulatory role connecting several electrolyte-handling pathways, so correcting magnesium is often necessary before other electrolyte imbalances will resolve."},
+  {cat:'Level 3 — Hard', q:"Construct the reasoning that explains why increasing electropositivity down Group 2 correlates with increasing hydroxide solubility and thermal stability.", a:"As the metals become more electropositive going down the group, the M–OH bond becomes more ionic and the hydroxide lattice more readily dissociates in water and resists thermal decomposition, explaining why solubility and thermal stability both rise from Mg to Ba."},
+  {cat:'Level 3 — Hard', q:"Beryllium is the exception across several Group 2 trends (peroxide formation, hydroxide basicity). Propose the underlying reason implied by the lecture's emphasis on reactivity and toxicity.", a:"Beryllium's small size and different reactivity relative to the rest of the group make its compounds behave differently (e.g. non-basic Be(OH)₂, no peroxide), which parallels its distinct and extreme toxicity profile compared with the biologically essential heavier members (Mg, Ca)."},
+  {cat:'Level 3 — Hard', q:"Explain how the historical drop in dietary calcium intake (Stone Age to modern) is linked, according to the lecture, to three seemingly unrelated chronic diseases.", a:"Reduced calcium intake removes calcium's protective/regulatory roles — bone mineralisation (osteoporosis), smooth muscle/vasoconstrictor regulation (hypertension), and proposed metabolic effects (colon cancer, weight) — so a single dietary deficiency contributes to multiple, mechanistically distinct disease risks."},
+  {cat:'Level 3 — Hard', q:"A postmenopausal woman is told calcium is a 'preventative strategy,' not a 'therapy,' for osteoporosis. Explain the biological reasoning behind this distinction.", a:"Because 99% of body calcium is stored in bone as a reservoir built mainly during the first three decades of life, once peak bone density has passed, calcium intake later in life can slow further loss but cannot rebuild the lost peak density — hence it prevents future loss rather than reversing what has already occurred."},
+  {cat:'Level 3 — Hard', q:"Explain why calcium supplementation lowers blood pressure only in some patients (e.g. salt-sensitive hypertension) but is not a sole treatment for hypertension generally.", a:"Calcium's effect on blood pressure works through smooth muscle contraction and sympathetic tone, a mechanism most relevant when blood pressure is driven by salt-sensitive vasoconstriction, so it helps that specific pathway but does not address other causes of hypertension."},
+  {cat:'Level 3 — Hard', q:"Reconcile the old and new evidence on calcium intake and kidney stones by explaining the oxalate mechanism.", a:"Dietary calcium binds oxalate in the gut before it can be absorbed; when calcium intake is too low, more free oxalate is absorbed and later excreted, raising calcium oxalate stone risk — so adequate calcium intake reduces, rather than increases, stone formation in most people."},
+  {cat:'Level 3 — Hard', q:"Explain why calcium carbonate's 40% elemental calcium content is clinically important when calculating a patient's supplement dose.", a:"Since only 40% of the tablet's mass is elemental Ca²⁺, a clinician must calculate the total salt dose needed to deliver a target elemental calcium amount (e.g. 1000 mg of salt yields only 400 mg of Ca²⁺), otherwise the patient could be significantly under-dosed if the label is misread."},
+  {cat:'Level 3 — Hard', q:"Explain the pH-dependence of calcium carbonate absorption and why this creates a specific administration instruction.", a:"Calcium carbonate requires stomach acid to dissolve and be absorbed, so it should be taken with food, when gastric acid secretion is stimulated, to maximise absorption — taking it on an empty stomach would reduce effectiveness."},
+  {cat:'Level 3 — Hard', q:"A patient develops constipation on calcium carbonate. Explain the physiological rationale for co-administering magnesium salts.", a:"Calcium carbonate tends to slow gut motility and cause constipation, while magnesium salts draw water into the intestine osmotically and have the opposite (laxative) effect, so combining the two offsets calcium's constipating side effect."},
+  {cat:'Level 3 — Hard', q:"Explain why antacid formulations that combine magnesium and aluminium salts represent a deliberate pharmacological trade-off rather than an incidental mixture.", a:"Magnesium hydroxide acts rapidly as an antacid but causes diarrhea via its osmotic laxative effect, while aluminium-based salts are slower-acting but cause constipation; combining the two neutralises stomach acid effectively while cancelling out each other's opposing GI side effects."},
+  {cat:'Level 3 — Hard', q:"Explain how magnesium's role in both cardiac arrhythmia treatment and eclampsia treatment reflects a common underlying pharmacological property.", a:"In both conditions, IV magnesium sulfate is used for its ability to stabilise excitable tissue (cardiac muscle and the CNS/vasculature) in life-threatening emergencies, reflecting magnesium's broader physiological role in regulating neuromuscular and cardiovascular excitability."},
+  {cat:'Level 3 — Hard', q:"Explain why hypermagnesemia is described as rare despite magnesium supplements being widely used therapeutically.", a:"Because in patients with normal renal function, the kidneys efficiently excrete excess magnesium, hypermagnesemia mainly arises when kidney failure removes this regulatory safety valve, making it rare except in that specific population."},
+  {cat:'Level 3 — Hard', q:"Using the vitamin D activation pathway, explain why a patient with liver disease and a patient with kidney disease could both develop calcium-related bone problems, but for different reasons.", a:"The liver performs the first activation step (vitamin D → calcidiol) and the kidney performs the second (calcidiol → calcitriol); liver disease would impair calcidiol formation while kidney disease impairs the calcidiol-to-calcitriol conversion — both ultimately reduce active calcitriol and calcium absorption, but by disrupting different steps of the same pathway."},
+  {cat:'Level 3 — Hard', q:"Explain the physiological logic connecting calcium's 1:10,000 intracellular-to-extracellular gradient to why even small disruptions in extracellular calcium can have large clinical effects.", a:"Because normal cell signalling relies on a large, tightly maintained gradient where a small calcium influx produces a proportionally large intracellular signal, a relatively modest drop in extracellular calcium disproportionately affects the signalling gradient, explaining why even mild hypocalcemia can markedly affect neuromuscular excitability."},
+  {cat:'Level 3 — Hard', q:"A patient has kidney failure and takes an aluminium/magnesium antacid, an iron supplement, and is being evaluated for eclampsia. Identify two separate drug-related concerns raised by the lecture content.", a:"(1) Magnesium in the antacid could reduce absorption of the iron supplement, requiring separated dosing; (2) if eclampsia treatment with IV MgSO₄ becomes necessary, the patient's kidney failure means magnesium excretion is impaired, raising the risk of hypermagnesemia and requiring dose reduction and monitoring."},
+  {cat:'Level 3 — Hard', q:"Explain why PTH is described as raising blood calcium through three different organ systems rather than one.", a:"Because blood calcium must be tightly maintained despite continuous losses (renal excretion, incomplete gut absorption) and demand, PTH coordinates three simultaneous sources of calcium — bone resorption, gut absorption, and renal reabsorption — to reliably restore blood calcium regardless of which pathway is limiting."},
+  {cat:'Level 3 — Hard', q:"Explain why non-calciotropic hormones (e.g. sex hormones) are distinguished from PTH in calcium regulation despite both influencing calcium balance.", a:"PTH is directly regulated by blood calcium levels in a feedback loop (a calciotropic hormone), whereas non-calciotropic hormones influence calcium balance as a secondary effect of their primary endocrine roles and are not themselves controlled by calcium levels."},
+  {cat:'Level 3 — Hard', q:"Using the concept of a 'dynamic reservoir,' explain how the skeleton can both store 99% of body calcium and still allow blood calcium to remain in a narrow 1% range.", a:"Bone constantly exchanges calcium with the extracellular fluid under hormonal control (via PTH-driven resorption and calcitriol-driven absorption), so the skeleton acts as a buffering reservoir that can release or absorb calcium as needed, keeping the small extracellular pool stable."},
+  {cat:'Level 3 — Hard', q:"Explain why increasing calcium intake to prevent kidney stones seems counterintuitive, and what evidence overturned the old belief.", a:"Intuitively, since kidney stones are often calcium oxalate, reducing calcium intake seems logical; however, evidence shows low calcium intake leaves more free oxalate to be absorbed and excreted, increasing stone formation — so higher dietary calcium (~1200 mg/day) actually reduces stone recurrence by roughly 50% by binding oxalate in the gut instead."},
+  {cat:'Level 3 — Hard', q:"A student argues that because calcium carbonate is cheap and contains a high percentage of elemental calcium, it must be the best supplement for every patient. Identify a flaw in this reasoning.", a:"Calcium carbonate's absorption is pH-dependent and requires being taken with food, and it commonly causes gas, bloating, and constipation, so patients with low stomach acid or GI intolerance might be better suited to a different calcium salt despite carbonate's cost and elemental-calcium advantages."},
+  {cat:'Level 3 — Hard', q:"Explain why magnesium is described as essential to both DNA/RNA stability and to photosynthesis, and what this suggests about its fundamental biochemical role.", a:"Both roles depend on Mg²⁺'s ability to stabilise molecular structures and mediate redox/enzymatic chemistry, suggesting magnesium functions as a fundamental structural and catalytic cofactor across very different biological systems, from genetics to energy capture."},
+  {cat:'Level 3 — Hard', q:"Explain the clinical reasoning for monitoring both plasma Ca²⁺ and ECG during slow IV calcium gluconate administration for severe hypocalcemia.", a:"Rapid or excessive correction of calcium can cause cardiac arrhythmias because calcium directly affects cardiac muscle excitability, so ECG monitoring detects cardiac effects in real time while plasma Ca²⁺ monitoring ensures the correction stays within a safe range."},
+  {cat:'Level 3 — Hard', q:"Explain why children, pregnant women, and the elderly are grouped together as having increased calcium needs despite very different physiological states.", a:"Children need calcium for bone growth toward peak density, pregnant/lactating women need it for fetal skeletal development and breast milk production, and the elderly need it to counteract age-related bone loss — three different physiological demands that all draw down the same calcium reservoir."},
+  {cat:'Level 3 — Hard', q:"Using the information on Group 2 minerals, explain why beryllium, magnesium, and calcium each occur in structurally different mineral types.", a:"This reflects each cation's differing size, charge density, and bonding preference: beryllium's very small, highly charge-dense ion favours complex aluminosilicate frameworks (beryl), while the larger magnesium and calcium ions readily form simple carbonate lattices (magnesite, dolomite, limestone/marble)."},
+  {cat:'Level 3 — Hard', q:"Explain how the lecture's information on magnesium absorption and excretion routes could inform managing a patient with chronic diarrhea.", a:"Since magnesium is absorbed in the ileum and colon and most salts act osmotically as laxatives, chronic diarrhea both reflects and worsens magnesium loss (a stated cause of hypomagnesemia), so such patients should be monitored for magnesium deficiency and its downstream effects."},
+  {cat:'Level 3 — Hard', q:"Explain why treating eclampsia with IV magnesium sulfate can be considered both a cardiovascular and neurological intervention.", a:"IV MgSO₄ addresses eclampsia because it is a life-threatening hypertensive (cardiovascular) disorder with neurological seizure risk, and magnesium's excitability-dampening action addresses both the vascular and neurological components simultaneously."},
+  {cat:'Level 3 — Hard', q:"Explain why the lecture presents calcium's link to hypertension and obesity as 'mechanisms' while explicitly cautioning that supplementation is 'not justified' or needs 'more studies'.", a:"This distinction reflects that a plausible physiological mechanism does not automatically translate into proven clinical benefit from supplementation, so the lecture separates biological plausibility from the current strength of clinical evidence."},
+  {cat:'Level 3 — Hard', q:"Explain why hyperphosphatemia specifically is singled out as a critical link between kidney failure and bone disease.", a:"Because phosphate excretion depends on functioning kidneys, and excess phosphate specifically binds and removes free calcium via complexation, hyperphosphatemia directly worsens the hypocalcemia already caused by low calcitriol, making it a compounding rather than an independent problem."},
+  {cat:'Level 3 — Hard', q:"A clinician is deciding between oral or IV magnesium for a mildly symptomatic, non-emergency case of hypomagnesemia in a patient with normal renal function. Justify the choice.", a:"Oral magnesium (e.g. magnesium glycerophosphate tablets) is appropriate for non-emergency cases, reserving IV or IM MgSO₄ (used when levels are critically low, e.g. <0.5–1 mmol/kg) for more severe or emergency presentations; since renal function is normal, no dose reduction is needed."},
+  {cat:'Level 3 — Hard', q:"Explain how magnesium's designation as the 'fourth most abundant cation overall' versus 'second most abundant in interstitial fluid' illustrates the importance of specifying compartment.", a:"The same ion can rank differently depending on whether total body content (including the large bone-stored fraction) or a specific fluid compartment is being measured, showing that abundance rankings are compartment-specific."},
+  {cat:'Level 3 — Hard', q:"Synthesize the overall pharmacological theme connecting magnesium and calcium as presented in this lecture.", a:"Both are essential s-block divalent cations whose physiological actions (enzyme/ATP cofactor activity, membrane/muscle excitability, bone mineralisation) are tightly regulated by absorption, storage in bone, and renal excretion; disruption of this regulation produces predictable clinical syndromes managed with specific salts matched to severity and cause."},
+];
+
+const fcGrid = document.getElementById('fcGrid');
+const fcFilters = document.getElementById('fcFilters');
+
+const fcLevels = [...new Set(flashcards.map(c=>c.cat))];
+fcFilters.innerHTML = fcLevels.map((c,i)=>`<button class="fc-filter ${i===0?'is-active':''}" data-cat="${c}">${c}</button>`).join('');
+
+function renderCards(){
+  fcGrid.innerHTML = flashcards.map((c,i)=>`
+    <div class="fc-card" data-cat="${c.cat}" data-i="${i}">
+      <div class="fc-inner">
+        <div class="fc-face front">
+          <span class="fc-tag">${c.cat}</span>
+          <span class="fc-q">${c.q}</span>
+          <span class="fc-hint">tap to flip</span>
+        </div>
+        <div class="fc-face back">
+          <span class="fc-tag">ANSWER</span>
+          <span class="fc-a">${c.a}</span>
+          <span class="fc-hint">tap to flip</span>
+        </div>
+      </div>
+    </div>`).join('');
+  fcGrid.querySelectorAll('.fc-card').forEach(card=>{
+    card.addEventListener('click', ()=> card.classList.toggle('flipped'));
+  });
+  applyFcFilter(fcLevels[0]);
+}
+
+function applyFcFilter(cat){
+  fcGrid.querySelectorAll('.fc-card').forEach(card=>{
+    card.classList.remove('flipped');
+    card.classList.toggle('is-hidden', card.dataset.cat!==cat);
+  });
+  document.getElementById('fcCount').textContent = flashcards.filter(c=>c.cat===cat).length + ' cards';
+}
+
+renderCards();
+
+fcFilters.querySelectorAll('.fc-filter').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    fcFilters.querySelectorAll('.fc-filter').forEach(b=>b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    applyFcFilter(btn.dataset.cat);
+  });
+});
+
+/* ============================================================
+   QUIZ BANK (30+ MCQ, shuffled options)
+   ============================================================ */
+const quizBank = [
+  {lvl:'Level 1 — Easy', q:"Which elements make up Group 2 (alkaline earth metals)?", correct:"Be, Mg, Ca, Sr, Ba, Ra", wrong:["Li, Na, K, Rb, Cs, Fr", "H, He, Li, Be, B, C", "Sc, Y, La, Ac"]},
+  {lvl:'Level 1 — Easy', q:"How many valence electrons do Group 2 elements have?", correct:"2", wrong:["1", "3", "8"]},
+  {lvl:'Level 1 — Easy', q:"What type of orbital holds Group 2 valence electrons?", correct:"s-orbital", wrong:["p-orbital", "d-orbital", "f-orbital"]},
+  {lvl:'Level 1 — Easy', q:"What is the charge of the stable cation formed by alkaline earth metals?", correct:"2+", wrong:["1+", "3+", "1-"]},
+  {lvl:'Level 1 — Easy', q:"Why are alkaline earth metals not found as pure metals in nature?", correct:"They are very reactive", wrong:["They are radioactive", "They are gases", "They are unreactive"]},
+  {lvl:'Level 1 — Easy', q:"What mineral is beryllium found in?", correct:"Beryl", wrong:["Magnesite", "Dolomite", "Limestone"]},
+  {lvl:'Level 1 — Easy', q:"What is magnesite's formula?", correct:"MgCO₃", wrong:["CaCO₃", "MgCl₂", "MgSO₄"]},
+  {lvl:'Level 1 — Easy', q:"What is dolomite's formula?", correct:"MgCO₃·CaCO₃", wrong:["MgCO₃ only", "CaCO₃ only", "MgCl₂·CaCl₂"]},
+  {lvl:'Level 1 — Easy', q:"Calcium is naturally found in:", correct:"Limestone, chalk, and marble", wrong:["Beryl", "Magnesite", "Seawater salt only"]},
+  {lvl:'Level 1 — Easy', q:"What happens to electropositivity down Group 2?", correct:"It increases", wrong:["It decreases", "It stays the same", "It reverses"]},
+  {lvl:'Level 1 — Easy', q:"What is the general formula for Group 2 oxides?", correct:"MO", wrong:["M₂O", "MO₂", "M₂O₃"]},
+  {lvl:'Level 1 — Easy', q:"Group 2 oxides are generally:", correct:"Basic", wrong:["Acidic", "Neutral", "Amphoteric only"]},
+  {lvl:'Level 1 — Easy', q:"Which element does not form a peroxide?", correct:"Beryllium", wrong:["Magnesium", "Calcium", "Barium"]},
+  {lvl:'Level 1 — Easy', q:"Which hydroxide does not act as a base?", correct:"Be(OH)₂", wrong:["Mg(OH)₂", "Ca(OH)₂", "Ba(OH)₂"]},
+  {lvl:'Level 1 — Easy', q:"Halides of Mg, Ca, Sr, and Ba are:", correct:"Ionic and sparingly soluble", wrong:["Covalent and highly soluble", "Gaseous", "Completely insoluble"]},
+  {lvl:'Level 1 — Easy', q:"Which magnesium halides are hygroscopic?", correct:"MgCl₂, MgBr₂, MgI₂", wrong:["MgF₂ only", "MgO and MgS", "MgCO₃ and MgSO₄"]},
+  {lvl:'Level 1 — Easy', q:"Anhydrous CaCl₂ is used as a:", correct:"Desiccant", wrong:["Laxative", "Antacid", "Antibiotic"]},
+  {lvl:'Level 1 — Easy', q:"Beryllium and its compounds are:", correct:"Extremely poisonous", wrong:["Completely harmless", "Mildly beneficial", "Used widely in medicine"]},
+  {lvl:'Level 1 — Easy', q:"Inhaling beryllium can cause:", correct:"Chronic Beryllium Disease (CBD)", wrong:["Osteoporosis", "Eclampsia", "Renal osteodystrophy"]},
+  {lvl:'Level 1 — Easy', q:"Skin contact with soluble beryllium compounds causes:", correct:"Severe skin irritation", wrong:["No effect", "Hair loss", "Tooth decay"]},
+  {lvl:'Level 1 — Easy', q:"The most abundant stable magnesium isotope is:", correct:"²⁴Mg", wrong:["²⁵Mg", "²⁶Mg", "²⁸Mg"]},
+  {lvl:'Level 1 — Easy', q:"Which magnesium isotope is radioactive?", correct:"²⁸Mg", wrong:["²⁴Mg", "²⁵Mg", "²⁶Mg"]},
+  {lvl:'Level 1 — Easy', q:"Most magnesium salts in the body act as a:", correct:"Laxative", wrong:["Diuretic", "Sedative", "Antihistamine"]},
+  {lvl:'Level 1 — Easy', q:"Milk of magnesia is a suspension of:", correct:"Magnesium hydroxide", wrong:["Magnesium chloride", "Magnesium sulfate", "Magnesium carbonate"]},
+  {lvl:'Level 1 — Easy', q:"Magnesium acts as a cofactor for how many enzymatic processes?", correct:"Over 300", wrong:["About 10", "About 50", "Over 1000"]},
+  {lvl:'Level 1 — Easy', q:"What must ATP bind to become biologically active?", correct:"Mg²⁺", wrong:["Ca²⁺", "Na⁺", "Fe²⁺"]},
+  {lvl:'Level 1 — Easy', q:"Mg²⁺ forms the redox-active centre of which molecule?", correct:"Chlorophyll", wrong:["Hemoglobin", "Insulin", "Collagen"]},
+  {lvl:'Level 1 — Easy', q:"Name a good dietary source of magnesium.", correct:"Green vegetables", wrong:["Red meat only", "Refined sugar", "Cooking oil"]},
+  {lvl:'Level 1 — Easy', q:"Where is magnesium mainly absorbed?", correct:"Ileum and colon", wrong:["Stomach", "Esophagus", "Mouth"]},
+  {lvl:'Level 1 — Easy', q:"Which organ excretes magnesium?", correct:"Kidneys", wrong:["Liver", "Lungs", "Skin"]},
+  {lvl:'Level 1 — Easy', q:"The average human body contains about how much magnesium?", correct:"24 g", wrong:["2.4 g", "240 g", "1000 g"]},
+  {lvl:'Level 1 — Easy', q:"About what percentage of body magnesium is stored in bone?", correct:"50%", wrong:["10%", "25%", "99%"]},
+  {lvl:'Level 1 — Easy', q:"Hypermagnesemia is most often caused by:", correct:"Kidney failure", wrong:["Excess exercise", "Vitamin D deficiency", "Dehydration"]},
+  {lvl:'Level 1 — Easy', q:"A common cause of hypomagnesemia is:", correct:"Diarrhea", wrong:["Overhydration", "High calcium intake", "Sunlight exposure"]},
+  {lvl:'Level 1 — Easy', q:"Severe symptomatic hypomagnesemia is treated with:", correct:"IV or IM magnesium sulfate", wrong:["Oral iron", "IV calcium gluconate", "Oral potassium chloride"]},
+  {lvl:'Level 1 — Easy', q:"Oral magnesium supplements commonly used are:", correct:"Magnesium glycerophosphate tablets", wrong:["Magnesium metal powder", "Magnesium peroxide capsules", "Magnesium beryllate"]},
+  {lvl:'Level 1 — Easy', q:"IV MgSO₄ is used as an emergency treatment for:", correct:"Serious arrhythmia", wrong:["The common cold", "A mild headache", "Sunburn"]},
+  {lvl:'Level 1 — Easy', q:"IV MgSO₄ is the standard emergency treatment for:", correct:"Eclampsia", wrong:["Gestational diabetes", "Morning sickness", "Placenta previa"]},
+  {lvl:'Level 1 — Easy', q:"Magnesium trisilicate is used for:", correct:"Peptic ulcers", wrong:["Arrhythmia", "Osteoporosis", "Kidney stones"]},
+  {lvl:'Level 1 — Easy', q:"Antacids often combine magnesium salts with:", correct:"Aluminium salts", wrong:["Iron salts", "Zinc salts", "Copper salts"]},
+  {lvl:'Level 1 — Easy', q:"How many stable isotopes of calcium are mentioned in the lecture?", correct:"Four", wrong:["Two", "Six", "One"]},
+  {lvl:'Level 1 — Easy', q:"Ca²⁺ is described as the ___ inorganic element in the body.", correct:"Most abundant", wrong:["Least abundant", "Second most abundant", "Rarest"]},
+  {lvl:'Level 1 — Easy', q:"The body contains about how much calcium?", correct:"1000 g", wrong:["100 g", "10 g", "10,000 g"]},
+  {lvl:'Level 1 — Easy', q:"What percentage of body calcium is stored in bones and teeth?", correct:"99%", wrong:["50%", "75%", "25%"]},
+  {lvl:'Level 1 — Easy', q:"What hormone raises blood calcium levels?", correct:"Parathyroid hormone (PTH)", wrong:["Insulin", "Calcitonin", "Cortisol"]},
+  {lvl:'Level 1 — Easy', q:"Estimated Stone Age calcium intake was:", correct:"2000–3000 mg/day", wrong:["200–300 mg/day", "600 mg/day", "5000 mg/day"]},
+  {lvl:'Level 1 — Easy', q:"Average modern calcium intake is about:", correct:"600 mg/day", wrong:["1200 mg/day", "2000 mg/day", "300 mg/day"]},
+  {lvl:'Level 1 — Easy', q:"Which is a chronic disease risk linked to calcium deficiency?", correct:"Osteoporosis", wrong:["Chronic Beryllium Disease", "The common cold", "Malaria"]},
+  {lvl:'Level 1 — Easy', q:"About how much calcium accumulates in the fetal skeleton during pregnancy?", correct:"~30 g", wrong:["~3 g", "~300 g", "~1000 g"]},
+  {lvl:'Level 1 — Easy', q:"Peak bone density is mainly built during:", correct:"The first three decades of life", wrong:["Only after age 50", "Only in infancy", "Only during pregnancy"]},
+  {lvl:'Level 1 — Easy', q:"Calcium regulates blood pressure mainly by influencing:", correct:"Smooth muscle contraction", wrong:["Red blood cell count", "Liver enzyme activity", "Lung capacity"]},
+  {lvl:'Level 1 — Easy', q:"The root cause of renal osteodystrophy is:", correct:"Impaired vitamin D activation", wrong:["Excess dietary calcium", "Overactive thyroid", "Beryllium toxicity"]},
+  {lvl:'Level 1 — Easy', q:"The liver converts vitamin D into:", correct:"Calcidiol", wrong:["Calcitriol", "Calcitonin", "Cholecalciferol only"]},
+  {lvl:'Level 1 — Easy', q:"The kidney converts calcidiol into:", correct:"Calcitriol", wrong:["Calcidiol", "PTH", "Vitamin D3 directly"]},
+  {lvl:'Level 1 — Easy', q:"In renal osteodystrophy, phosphate levels become:", correct:"Too high (hyperphosphatemia)", wrong:["Too low", "Unchanged", "Immediately normalized"]},
+  {lvl:'Level 1 — Easy', q:"Higher calcium intake can reduce kidney stone recurrence by about:", correct:"50%", wrong:["5%", "90%", "0%"]},
+  {lvl:'Level 1 — Easy', q:"Calcium carbonate provides what percentage of elemental calcium?", correct:"40%", wrong:["10%", "75%", "100%"]},
+  {lvl:'Level 1 — Easy', q:"Calcium carbonate reacting with stomach acid produces:", correct:"CO₂", wrong:["O₂", "H₂", "N₂"]},
+  {lvl:'Level 1 — Easy', q:"Calcium carbonate should be taken:", correct:"With food", wrong:["On an empty stomach only", "At bedtime only", "With grapefruit juice only"]},
+  {lvl:'Level 1 — Easy', q:"Which calcium salt is the most common and least expensive supplement?", correct:"Calcium carbonate", wrong:["Calcium gluconate", "Calcium aspartate", "Calcium lactate"]},
+  {lvl:'Level 2 — Medium', q:"What happens to BOTH water solubility and thermal stability of Group 2 hydroxides from Mg to Ba?", correct:"Both increase", wrong:["Both decrease", "Solubility increases but stability decreases", "Both stay constant"]},
+  {lvl:'Level 2 — Medium', q:"Which best explains why alkaline earth metals characteristically form M²⁺ ions?", correct:"Strong reducing power drives loss of both ns² valence electrons", wrong:["They gain two electrons to complete an octet", "They share electrons covalently", "They lose only one electron per atom"]},
+  {lvl:'Level 2 — Medium', q:"Based on the electropositivity trend, which metal is more reactive?", correct:"Barium", wrong:["Magnesium", "Beryllium", "Both equally reactive"]},
+  {lvl:'Level 2 — Medium', q:"Why are MgCl₂, MgBr₂, and MgI₂ singled out as hygroscopic among Group 2 halides?", correct:"They specifically absorb moisture from air beyond general halide solubility behaviour", wrong:["They are the only soluble halides in the group", "They are covalent rather than ionic", "They react explosively with water"]},
+  {lvl:'Level 2 — Medium', q:"What is unusual about anhydrous CaCl₂ compared to the general solubility trend of Group 2 halides?", correct:"It has an unusually strong affinity for water despite halides being only sparingly soluble", wrong:["It is completely insoluble", "It is a covalent compound", "It does not contain a halide ion"]},
+  {lvl:'Level 2 — Medium', q:"How do beryllium's two toxic effects differ?", correct:"Inhalation causes CBD; skin contact with soluble salts causes irritation", wrong:["Both inhalation and skin contact cause the same disease", "Only ingestion is toxic", "Beryllium is toxic only in its metallic form"]},
+  {lvl:'Level 2 — Medium', q:"Why is magnesium essential for virtually all enzymatic energy reactions in the body?", correct:"ATP must bind Mg²⁺ (as Mg-ATP) to become biologically active", wrong:["Magnesium directly supplies electrons for ATP synthesis", "ATP cannot be made without magnesium metal", "Magnesium replaces phosphate in ATP"]},
+  {lvl:'Level 2 — Medium', q:"Magnesium's roles in nucleic acid stability and as an enzyme cofactor are connected because both involve:", correct:"Mg²⁺ acting on nucleic acid biochemistry", wrong:["Magnesium replacing calcium in DNA", "Magnesium acting only in plants", "Magnesium inhibiting all enzymes"]},
+  {lvl:'Level 2 — Medium', q:"Why can magnesium rank differently as 'fourth most abundant cation overall' versus 'second most abundant in interstitial fluid'?", correct:"Abundance rankings depend on which body compartment is measured", wrong:["The two statements are contradictory and one is wrong", "Magnesium moves freely between compartments at random", "Only bone-stored magnesium counts as abundant"]},
+  {lvl:'Level 2 — Medium', q:"Why can magnesium salts act as a laxative under normal conditions but cause hypermagnesemia if kidneys fail?", correct:"Normally poor absorption plus renal excretion prevents accumulation, but renal failure removes the excretion safety valve", wrong:["Magnesium salts always accumulate regardless of kidney function", "Laxative action and hypermagnesemia are unrelated effects", "Kidney failure increases magnesium absorption in the gut"]},
+  {lvl:'Level 2 — Medium', q:"Why must magnesium sulfate dosing be reduced in renal impairment?", correct:"The kidneys are the primary route of magnesium excretion", wrong:["Magnesium is metabolised by the liver only", "Renal impairment increases magnesium absorption", "Magnesium sulfate is inactivated by the kidneys"]},
+  {lvl:'Level 2 — Medium', q:"What is the shared clinical rationale for IV MgSO₄ in both arrhythmia and eclampsia?", correct:"Emergency treatment of a life-threatening condition by stabilising excitable tissue", wrong:["Both are minor, non-urgent conditions", "Only eclampsia requires magnesium; arrhythmia does not", "Both are treated with the same oral dose"]},
+  {lvl:'Level 2 — Medium', q:"Why are magnesium and aluminium salts often combined in antacids?", correct:"Magnesium causes diarrhea while aluminium causes constipation, balancing side effects", wrong:["They react together to form a stronger acid", "Aluminium boosts magnesium absorption", "It only reduces production cost"]},
+  {lvl:'Level 2 — Medium', q:"Magnesium-containing antacids are a concern when co-prescribed with which drug classes?", correct:"Iron products and certain antibiotics", wrong:["Vitamins only", "Topical creams only", "Herbal teas only"]},
+  {lvl:'Level 2 — Medium', q:"Why should antacid timing be managed around other medications?", correct:"Magnesium salts can reduce absorption of many concurrently taken drugs", wrong:["Antacids have no interaction with other drugs", "Antacids only interact with insulin", "Timing has no clinical relevance"]},
+  {lvl:'Level 2 — Medium', q:"How does calcium's 1:10,000 intracellular-to-extracellular gradient relate to its messenger role?", correct:"The steep gradient allows small calcium changes to act as significant cellular signals", wrong:["The gradient has no functional significance", "Calcium signalling requires equal concentrations inside and outside cells", "The gradient only matters in bone"]},
+  {lvl:'Level 2 — Medium', q:"Why does the skeleton act as a 'dynamic reservoir' for calcium?", correct:"99% of calcium is stored there and can be exchanged to maintain the small extracellular pool", wrong:["Bone calcium never leaves the skeleton", "Only 1% of calcium is stored in bone", "The skeleton has no role in calcium regulation"]},
+  {lvl:'Level 2 — Medium', q:"PTH raises blood calcium through which three combined mechanisms?", correct:"Increasing bone resorption, stimulating gut uptake, promoting kidney reabsorption", wrong:["Only increasing bone resorption", "Only inhibiting the thyroid", "Only reducing kidney excretion of phosphate"]},
+  {lvl:'Level 2 — Medium', q:"What distinguishes calciotropic from non-calciotropic hormones?", correct:"Calciotropic hormones are directly regulated by calcium levels; non-calciotropic hormones are not", wrong:["Non-calciotropic hormones have no effect on calcium at all", "Calciotropic hormones are only found in bone", "There is no real distinction between them"]},
+  {lvl:'Level 2 — Medium', q:"How does the fall in calcium intake from the Stone Age to today connect to modern disease risk, per the lecture?", correct:"The chronic deficiency is linked to osteoporosis, high blood pressure, and colon cancer", wrong:["It has no linked health consequences", "It is linked only to tooth decay", "It only affects children"]},
+  {lvl:'Level 2 — Medium', q:"Why do childhood, pregnancy/lactation, and old age all require increased calcium intake despite being different life stages?", correct:"Each places a distinct extra demand on the calcium reservoir", wrong:["They share an identical biological demand", "Only childhood requires more calcium", "Old age requires less calcium than adulthood"]},
+  {lvl:'Level 2 — Medium', q:"Why is calcium described as a preventative strategy rather than a therapy for osteoporosis?", correct:"Peak bone density is built mainly in the first three decades of life, so later intake mainly slows further loss", wrong:["Calcium has no effect on bone at any age", "Calcium fully reverses existing bone loss", "Bone density is unrelated to calcium intake"]},
+  {lvl:'Level 2 — Medium', q:"Why is calcium supplementation not justified as a sole treatment for mild hypertension despite lowering blood pressure?", correct:"Its effect, though real, is not strong enough to replace standard treatment", wrong:["Calcium has no effect on blood pressure at all", "Calcium always raises blood pressure", "It is more effective than all antihypertensive drugs"]},
+  {lvl:'Level 2 — Medium', q:"What is the hypothesis behind high dietary calcium and weight management?", correct:"A low-calorie, high-calcium diet may increase energy metabolism", wrong:["Calcium directly burns fat cells", "Calcium blocks all calorie absorption", "Calcium has no proposed link to weight"]},
+  {lvl:'Level 2 — Medium', q:"What is the root cause linking kidney failure to bone disease in renal osteodystrophy?", correct:"Impaired activation of vitamin D (calcidiol to calcitriol)", wrong:["Excess dietary phosphate", "Beryllium accumulation", "Overactive parathyroid glands alone"]},
+  {lvl:'Level 2 — Medium', q:"What is the correct order of the vitamin D activation pathway described in the lecture?", correct:"Vitamin D → (liver) Calcidiol → (kidney) Calcitriol", wrong:["Vitamin D → (kidney) Calcidiol → (liver) Calcitriol", "Calcitriol → Calcidiol → Vitamin D", "Vitamin D → PTH → Calcitriol"]},
+  {lvl:'Level 2 — Medium', q:"Why does low calcitriol lead to poor dietary calcium absorption?", correct:"Calcitriol is what promotes dietary uptake of Ca²⁺ in the gut", wrong:["Calcitriol has no role in gut absorption", "Calcitriol blocks calcium absorption", "Calcitriol only affects bone, not the gut"]},
+  {lvl:'Level 2 — Medium', q:"How does hyperphosphatemia worsen hypocalcemia in renal osteodystrophy?", correct:"Excess phosphate binds free calcium via complexation", wrong:["Phosphate has no interaction with calcium", "Phosphate increases calcium absorption", "Phosphate replaces calcium in bone directly"]},
+  {lvl:'Level 2 — Medium', q:"Why does PTH release in renal osteodystrophy ultimately weaken bone?", correct:"PTH strips calcium from bone to correct low blood calcium", wrong:["PTH deposits extra calcium into bone", "PTH has no effect on bone", "PTH only affects the kidneys"]},
+  {lvl:'Level 2 — Medium', q:"Which three strategies together break the renal osteodystrophy cycle?", correct:"Phosphate control, hormone replacement (calcitriol), calcium supplementation", wrong:["Only dialysis", "Only calcium supplementation", "Only stopping all vitamin D activation"]},
+  {lvl:'Level 2 — Medium', q:"How has medical understanding of calcium intake and kidney stones changed?", correct:"Low calcium was once thought protective, but is now known to increase oxalate absorption and stone risk", wrong:["Understanding has not changed since first discovered", "High calcium was always known to increase stone risk", "Kidney stones are unrelated to calcium intake"]},
+  {lvl:'Level 2 — Medium', q:"Why doesn't higher calcium intake increase kidney stone risk in healthy people?", correct:"Adequate calcium binds oxalate in the gut, reducing its absorption", wrong:["Calcium is not absorbed at all when intake is high", "Kidney stones are not made of calcium", "Higher calcium intake dissolves existing stones"]},
+  {lvl:'Level 2 — Medium', q:"Why is knowing that calcium carbonate is 40% elemental calcium clinically important?", correct:"A 1000 mg tablet only delivers 400 mg of usable Ca²⁺", wrong:["The salt form has no bearing on the actual calcium dose", "All calcium salts deliver 100% elemental calcium", "The tablet is mostly inactive filler with no calcium"]},
+  {lvl:'Level 2 — Medium', q:"Why does calcium carbonate need to be taken with food?", correct:"Its absorption is pH-dependent and improves with stomach acid", wrong:["Food destroys calcium carbonate", "It has no relation to food or acid", "Taking it with food reduces its effectiveness"]},
+  {lvl:'Level 2 — Medium', q:"Why is calcium carbonate sometimes given together with magnesium salts?", correct:"To offset the constipation calcium carbonate commonly causes", wrong:["To increase its elemental calcium content", "To prevent gas and bloating specifically", "To reduce its cost"]},
+  {lvl:'Level 2 — Medium', q:"Why is severe acute hypocalcemia treated with a SLOW IV infusion of calcium gluconate rather than a rapid bolus?", correct:"Rapid correction risks cardiac complications, so plasma Ca²⁺ and ECG must be monitored", wrong:["A slow infusion is simply cheaper", "Fast infusion is always preferred but unavailable", "Calcium gluconate cannot be given intravenously at all"]},
+  {lvl:'Level 2 — Medium', q:"Which three groups are specifically noted as having increased calcium needs?", correct:"Children, pregnant women, and the elderly", wrong:["Only athletes", "Only office workers", "Only people with beryllium exposure"]},
+  {lvl:'Level 2 — Medium', q:"How does Group 2 oxide basicity relate to the general formula MO?", correct:"Each metal forms a simple ionic 1:1 oxide that behaves as a base", wrong:["The formula MO indicates the oxide is always acidic", "MO oxides are covalent and neutral", "MO has no bearing on basicity"]},
+  {lvl:'Level 2 — Medium', q:"How does beryllium differ from the rest of Group 2 regarding hydroxide basicity and peroxide formation?", correct:"Be(OH)₂ is not basic and beryllium forms no peroxide, unlike Mg, Ca, Sr, Ba", wrong:["Beryllium behaves identically to the rest of the group", "Beryllium is the only element that forms a peroxide", "Beryllium's hydroxide is the strongest base in the group"]},
+  {lvl:'Level 2 — Medium', q:"What links magnesium's laxative effect to its use as an antacid (Mg(OH)₂)?", correct:"Both rely on poor gut absorption and an osmotic effect drawing water into the intestine", wrong:["They are unrelated pharmacological mechanisms", "Only the antacid effect involves water movement", "The laxative effect requires IV administration"]},
+  {lvl:'Level 2 — Medium', q:"Why would a clinician check a patient's drug history before starting a magnesium-based antacid?", correct:"Because magnesium salts can reduce the absorption of several other drug classes", wrong:["Magnesium antacids have no known drug interactions", "Only IV magnesium interacts with other drugs", "Antacids are never taken alongside other medication"]},
+  {lvl:'Level 2 — Medium', q:"How does the calcium gradient (1:10,000) support calcium's function as a universal messenger for muscle contraction?", correct:"Small calcium influxes produce large, rapid intracellular signals against the steep gradient", wrong:["The gradient prevents calcium from acting as a signal", "Muscle contraction does not involve calcium signalling", "The gradient is equal inside and outside the cell"]},
+  {lvl:'Level 2 — Medium', q:"Why is calcium supplementation described as 'not a standalone cure' for hypertension or obesity?", correct:"It is one part of a broader preventative strategy, not a complete treatment on its own", wrong:["Because calcium has no proven link to either condition", "Because calcium worsens both conditions", "Because supplementation always cures both conditions"]},
+  {lvl:'Level 2 — Medium', q:"What do magnesium and calcium have in common regarding skeletal storage?", correct:"Both rely heavily on bone as a major reservoir (about 50% and 99% respectively)", wrong:["Neither mineral is stored in bone", "Only magnesium is stored in bone", "Only calcium is stored in bone"]},
+  {lvl:'Level 2 — Medium', q:"Why does old age increase calcium demand even though bones are no longer growing?", correct:"Increased intake is needed to counteract age-related changes in calcium metabolism that cause bone loss", wrong:["Aging increases calcium absorption efficiency", "Bone stops needing calcium entirely in old age", "Old age reduces the need for calcium"]},
+  {lvl:'Level 2 — Medium', q:"What connects magnesium's role in chlorophyll to its human physiological roles?", correct:"Both depend on Mg²⁺'s redox-active/cofactor chemistry in biological structures", wrong:["Chlorophyll and human enzymes share no chemical similarity", "Magnesium behaves as an inert filler in both cases", "Only plants use magnesium biologically"]},
+  {lvl:'Level 2 — Medium', q:"Why is hypermagnesemia considered rare compared to hypomagnesemia?", correct:"Normal kidneys efficiently excrete excess magnesium, so it mainly occurs with kidney failure", wrong:["Magnesium is never absorbed from the gut", "Hypomagnesemia is actually rarer than hypermagnesemia", "The kidneys have no role in magnesium regulation"]},
+  {lvl:'Level 2 — Medium', q:"Why does the lecture link diarrhea, alcoholism, and certain drugs together as causes of hypomagnesemia?", correct:"They share the ability to cause excess magnesium loss from the body", wrong:["They all increase magnesium absorption", "They are unrelated causes with no shared mechanism", "They only affect calcium, not magnesium"]},
+  {lvl:'Level 2 — Medium', q:"Why does the lecture emphasize that non-calciotropic hormones 'influence' but do not 'directly control' calcium balance?", correct:"To distinguish hormones regulated BY calcium levels from hormones that merely AFFECT calcium as a side effect", wrong:["Because non-calciotropic hormones have no measurable effect on calcium", "Because only non-calciotropic hormones regulate calcium", "Because the distinction is arbitrary and unimportant"]},
+  {lvl:'Level 2 — Medium', q:"What is the combined implication of magnesium's roles in ATP activation and DNA/RNA stability?", correct:"Magnesium deficiency could impair both energy metabolism and nucleic acid-dependent processes simultaneously", wrong:["Magnesium only affects energy metabolism, not genetics", "Magnesium only affects DNA, not cellular energy", "These two roles are mutually exclusive and cannot occur in the same cell"]},
+  {lvl:'Level 3 — Hard', q:"A dialysis patient has hypocalcemia, hyperphosphatemia, and elevated PTH. What is the correct sequence of events, starting from renal failure, that explains this presentation?", correct:"Renal failure → impaired calcitriol synthesis → reduced gut Ca absorption & phosphate retention → hyperphosphatemia complexes free calcium → hypocalcemia triggers PTH release", wrong:["Renal failure → excess calcitriol → hypercalcemia → suppressed PTH", "Renal failure → increased phosphate excretion → hypophosphatemia → hypercalcemia", "High dietary calcium → hyperphosphatemia → renal failure"]},
+  {lvl:'Level 3 — Hard', q:"Treating a renal osteodystrophy patient with calcium supplements alone, without phosphate control, is insufficient because:", correct:"Ongoing hyperphosphatemia will continue to complex added calcium, keeping active calcium low", wrong:["Calcium supplements are never absorbed in renal failure", "Phosphate has no effect on calcium levels", "Calcium supplements directly raise phosphate to dangerous levels"]},
+  {lvl:'Level 3 — Hard', q:"Renal osteodystrophy is best described as a 'vicious cycle' because:", correct:"Each abnormality (low calcitriol, hypocalcemia, hyperphosphatemia, PTH-driven resorption) reinforces the next", wrong:["It is a single, isolated deficiency with no feedback", "It only involves one hormone acting alone", "The cycle resolves spontaneously without treatment"]},
+  {lvl:'Level 3 — Hard', q:"Which set correctly matches each renal osteodystrophy treatment to the defect it addresses (phosphate binders/dialysis, synthetic calcitriol, calcium supplements)?", correct:"Excess phosphate; impaired vitamin D activation; calcium deficit", wrong:["All three treat only bone resorption", "All three treat only hypocalcemia", "All three have identical mechanisms"]},
+  {lvl:'Level 3 — Hard', q:"A patient on a magnesium/aluminium antacid, an oral antibiotic, and an ACE inhibitor should be counselled to:", correct:"Separate antacid dosing from the other medicines because magnesium can reduce their absorption", wrong:["Take all medicines together for convenience", "Stop the ACE inhibitor permanently", "Double the antibiotic dose to compensate"]},
+  {lvl:'Level 3 — Hard', q:"Why is IM magnesium sulfate reserved mainly for situations where IV access is unavailable, despite being effective?", correct:"IM injections are painful, so IV is generally preferred when possible", wrong:["IM magnesium sulfate does not work", "IM injections are contraindicated in all patients", "IM magnesium sulfate is more expensive than IV"]},
+  {lvl:'Level 3 — Hard', q:"A patient with renal impairment needs magnesium sulfate for symptomatic hypomagnesemia. What is the key dosing consideration?", correct:"The dose must be reduced because kidneys are the primary excretion route for magnesium", wrong:["No dose adjustment is ever needed", "The dose must be doubled to compensate for poor absorption", "Magnesium sulfate is contraindicated in all renal patients regardless of severity"]},
+  {lvl:'Level 3 — Hard', q:"Why could magnesium deficiency plausibly disrupt cellular metabolism broadly rather than affecting a single pathway?", correct:"Mg²⁺ is required both for ATP activation and for DNA/RNA stability, affecting energy and nucleic acid processes together", wrong:["Magnesium affects only muscle tissue", "Magnesium has a single, narrow biochemical role", "Magnesium deficiency only affects plant cells"]},
+  {lvl:'Level 3 — Hard', q:"Hypomagnesemia frequently triggers hypocalcemia, hypokalemia, and hyponatremia. This pattern suggests:", correct:"Magnesium plays a regulatory role connecting multiple electrolyte-handling pathways", wrong:["These electrolyte changes are coincidental and unrelated", "Magnesium has no interaction with other electrolytes", "Only calcium is affected by magnesium status"]},
+  {lvl:'Level 3 — Hard', q:"The increasing hydroxide solubility and thermal stability from Mg to Ba is best explained by:", correct:"Increasing electropositivity making the M–OH bond more ionic down the group", wrong:["Decreasing atomic size down the group", "Hydroxides becoming covalent down the group", "Random variation with no underlying trend"]},
+  {lvl:'Level 3 — Hard', q:"Beryllium's exceptional behaviour (no peroxide, non-basic hydroxide) compared to the rest of Group 2 is most consistent with:", correct:"Its distinct size/reactivity profile relative to the biologically essential heavier members", wrong:["Beryllium being the most reactive element in the group", "Beryllium having three valence electrons instead of two", "Beryllium not belonging to Group 2 at all"]},
+  {lvl:'Level 3 — Hard', q:"The drop in calcium intake from Stone Age (~2000–3000 mg/day) to modern levels (~600 mg/day) is linked to osteoporosis, hypertension, and colon cancer because:", correct:"Reduced calcium removes its protective roles in bone mineralisation, vascular regulation, and gut chemistry simultaneously", wrong:["These three diseases share no connection to calcium", "Only osteoporosis is linked to calcium intake", "Modern calcium intake is actually higher than in the Stone Age"]},
+  {lvl:'Level 3 — Hard', q:"Calcium is called a 'preventative strategy,' not a 'therapy,' for osteoporosis because:", correct:"Peak bone density is built mainly in the first three decades, so calcium later mainly slows further loss rather than rebuilding what's lost", wrong:["Calcium has no measurable effect on bone at any age", "Calcium fully rebuilds bone density lost after menopause", "Bone density is unrelated to dietary calcium"]},
+  {lvl:'Level 3 — Hard', q:"Calcium's effect on blood pressure is most clinically relevant in which specific scenario?", correct:"Salt-sensitive hypertension, via reduced vasoconstrictor tone", wrong:["All forms of hypertension equally", "Only hypotension", "Only hypertension caused by kidney stones"]},
+  {lvl:'Level 3 — Hard', q:"The reversal in medical opinion on calcium and kidney stones is explained by:", correct:"Low calcium leaves more free oxalate to be absorbed, increasing calcium oxalate stone risk", wrong:["Kidney stones are unrelated to oxalate at all", "High calcium was always known to reduce stone risk", "New evidence disproved any calcium-oxalate relationship"]},
+  {lvl:'Level 3 — Hard', q:"Why is a 1000 mg calcium carbonate tablet clinically NOT equivalent to a 1000 mg elemental calcium dose?", correct:"Calcium carbonate is only 40% elemental calcium, so the tablet delivers 400 mg Ca²⁺", wrong:["Calcium carbonate is 100% elemental calcium", "The tablet weight and elemental calcium are always identical", "Calcium carbonate contains no calcium at all"]},
+  {lvl:'Level 3 — Hard', q:"Why must calcium carbonate be taken with food specifically to maximise absorption?", correct:"Its absorption is pH-dependent and requires stomach acid, which is stimulated by food", wrong:["Food has no effect on calcium carbonate absorption", "Taking it with food destroys the calcium", "It must be taken only on an empty stomach for absorption"]},
+  {lvl:'Level 3 — Hard', q:"Co-administering calcium carbonate with magnesium salts addresses which specific trade-off?", correct:"Calcium carbonate's tendency to cause constipation, offset by magnesium's laxative effect", wrong:["Calcium carbonate's tendency to cause diarrhea, offset by magnesium's constipating effect", "Neither salt has any GI side effect", "Magnesium increases the elemental calcium content of the tablet"]},
+  {lvl:'Level 3 — Hard', q:"Combining magnesium and aluminium salts in antacids is best described as:", correct:"A deliberate trade-off cancelling opposing GI side effects (diarrhea vs constipation)", wrong:["An accidental combination with no pharmacological reasoning", "A way to increase the antacid's cost", "A method to prevent any antacid effect at all"]},
+  {lvl:'Level 3 — Hard', q:"Magnesium's use in both arrhythmia and eclampsia treatment reflects a common underlying property:", correct:"Stabilising excitable cardiac and neuromuscular/vascular tissue in emergencies", wrong:["Both conditions require the exact same drug for unrelated reasons", "Magnesium has no shared mechanism between the two uses", "Only eclampsia responds to magnesium; arrhythmia does not"]},
+  {lvl:'Level 3 — Hard', q:"Hypermagnesemia is rare mainly because:", correct:"Normal kidneys efficiently excrete excess magnesium, removing this risk except in renal failure", wrong:["Magnesium is never absorbed from the gut in healthy people", "Hypermagnesemia is actually more common than hypomagnesemia", "The body has no mechanism to regulate magnesium levels"]},
+  {lvl:'Level 3 — Hard', q:"A patient with liver disease and a patient with kidney disease could both develop calcium-related bone problems because:", correct:"The liver and kidney perform sequential steps (vitamin D → calcidiol → calcitriol) that both feed calcium absorption", wrong:["Liver and kidney disease share no connection to calcium metabolism", "Only kidney disease can ever affect calcium levels", "The liver and kidney perform identical, redundant functions"]},
+  {lvl:'Level 3 — Hard', q:"The clinical significance of calcium's steep 1:10,000 intracellular-to-extracellular gradient is that:", correct:"Even mild changes in extracellular calcium can disproportionately affect neuromuscular signalling", wrong:["The gradient has no clinical relevance", "Large changes in extracellular calcium are needed to cause any effect", "The gradient is reversed in disease states"]},
+  {lvl:'Level 3 — Hard', q:"A dialysis patient on a combined antacid is later diagnosed with pre-eclampsia requiring IV MgSO₄. What extra precaution is needed?", correct:"Reduce/monitor the magnesium dose carefully since renal failure impairs magnesium excretion, raising hypermagnesemia risk", wrong:["No precaution is needed since MgSO₄ is always safe in renal failure", "IV MgSO₄ should be replaced entirely by oral iron", "The antacid dose should be doubled to compensate"]},
+  {lvl:'Level 3 — Hard', q:"PTH raises blood calcium via three organ systems (bone, gut, kidney) rather than one because:", correct:"This provides reliable calcium restoration regardless of which single pathway is limited", wrong:["PTH can only act on one organ at a time, chosen randomly", "Only bone resorption is actually effective; the other two are irrelevant", "PTH's multiple actions are an evolutionary accident with no functional benefit"]},
+  {lvl:'Level 3 — Hard', q:"Calciotropic and non-calciotropic hormones are distinguished based on:", correct:"Whether the hormone's own secretion is directly regulated by blood calcium levels", wrong:["Whether the hormone has any effect on calcium at all", "Whether the hormone is produced in bone tissue", "Whether the hormone is a steroid or a protein"]},
+  {lvl:'Level 3 — Hard', q:"The skeleton's role as a 'dynamic reservoir' for calcium means:", correct:"Bone continuously exchanges calcium with extracellular fluid under hormonal control to buffer blood calcium", wrong:["Bone calcium is permanently fixed and never exchanged", "Only 1% of body calcium is ever stored in bone", "The skeleton plays no regulatory role in calcium homeostasis"]},
+  {lvl:'Level 3 — Hard', q:"A patient increases calcium intake to ~1200 mg/day to reduce kidney stone recurrence. The mechanism behind this benefit is:", correct:"Adequate calcium binds oxalate in the gut, reducing its absorption and later urinary excretion", wrong:["Higher calcium directly dissolves existing kidney stones", "Higher calcium increases oxalate absorption, which is beneficial", "Calcium intake has no mechanistic link to oxalate at all"]},
+  {lvl:'Level 3 — Hard', q:"A student claims calcium carbonate is always the best supplement because it's cheap and has a high elemental calcium percentage. What is the flaw in this reasoning?", correct:"It ignores its pH-dependent absorption, GI side effects, and need to be taken with food, which may not suit all patients", wrong:["There is no flaw; calcium carbonate is always optimal", "Calcium carbonate has the lowest elemental calcium of all salts", "Calcium carbonate cannot be taken orally at all"]},
+  {lvl:'Level 3 — Hard', q:"Magnesium's essential roles in both DNA/RNA stability and photosynthesis suggest:", correct:"A fundamental structural/catalytic cofactor role across very different biological systems", wrong:["Magnesium functions identically to calcium in all systems", "Magnesium's biological role is limited strictly to plants", "These two roles are unrelated coincidences with no shared chemistry"]},
+  {lvl:'Level 3 — Hard', q:"Monitoring plasma Ca²⁺ and ECG during slow IV calcium gluconate infusion is critical because:", correct:"Rapid or excessive calcium correction can cause dangerous cardiac arrhythmias", wrong:["ECG monitoring is unrelated to calcium infusion", "Calcium gluconate has no cardiac effects at any dose", "Monitoring is only needed for magnesium, not calcium, infusions"]},
+  {lvl:'Level 3 — Hard', q:"Children, pregnant women, and the elderly are grouped as having increased calcium needs because:", correct:"Each has a distinct physiological demand that draws down the shared calcium reservoir faster than typical intake replenishes it", wrong:["They share an identical, single biological cause", "Only children actually need more calcium; the others do not", "Increased need only applies during illness, not normal physiology"]},
+  {lvl:'Level 3 — Hard', q:"Beryllium (silicate mineral), magnesium (carbonate minerals), and calcium (carbonate minerals) occurring in different mineral types most likely reflects:", correct:"Differences in ionic size and charge density affecting lattice/bonding preferences", wrong:["Random chance with no chemical basis", "All three elements always form identical mineral types", "Beryllium does not occur in any natural mineral"]},
+  {lvl:'Level 3 — Hard', q:"A patient with chronic diarrhea should be monitored for magnesium status because:", correct:"Magnesium is absorbed in the ileum/colon and lost through GI fluid loss, a stated cause of hypomagnesemia", wrong:["Diarrhea has no effect on magnesium absorption or loss", "Diarrhea only affects calcium, never magnesium", "Magnesium is absorbed exclusively in the stomach"]},
+  {lvl:'Level 3 — Hard', q:"IV MgSO₄ for eclampsia is classified as both a cardiovascular and neurological emergency treatment because:", correct:"Eclampsia is a life-threatening hypertensive disorder with neurological seizure risk that magnesium helps stabilise on both fronts", wrong:["Eclampsia has no cardiovascular or neurological component", "Magnesium only affects the cardiovascular system in eclampsia", "The classification is arbitrary with no clinical basis"]},
+  {lvl:'Level 3 — Hard', q:"The lecture separates calcium's proposed mechanisms (hypertension, weight) from firm clinical recommendations because:", correct:"Biological plausibility does not automatically prove clinical benefit from supplementation", wrong:["The mechanisms described are entirely fictional", "Calcium supplementation is proven ineffective for all uses", "Mechanisms and clinical evidence always match exactly"]},
+  {lvl:'Level 3 — Hard', q:"Hyperphosphatemia is singled out as critical in renal osteodystrophy (versus other electrolyte excesses) because:", correct:"Phosphate directly binds and removes free calcium via complexation, compounding existing hypocalcemia", wrong:["Phosphate has no interaction with calcium levels", "Hyperphosphatemia occurs independently of kidney function", "Phosphate excess only affects magnesium, not calcium"]},
+  {lvl:'Level 3 — Hard', q:"For a mildly symptomatic hypomagnesemic patient with normal renal function, the appropriate first-line treatment is:", correct:"Oral magnesium (e.g. magnesium glycerophosphate tablets), reserving IV/IM MgSO₄ for severe or emergency cases", wrong:["IV MgSO₄ regardless of severity", "No treatment is needed for mild symptoms", "Dialysis is required for all magnesium imbalances"]},
+  {lvl:'Level 3 — Hard', q:"Magnesium ranking as 'fourth most abundant cation overall' but 'second most abundant in interstitial fluid' illustrates that:", correct:"Abundance rankings are compartment-specific and can differ depending on what is measured", wrong:["One of the two statements must be incorrect", "Magnesium is evenly distributed across all compartments", "Compartment has no bearing on reported abundance"]},
+  {lvl:'Level 3 — Hard', q:"The overarching theme connecting magnesium and calcium physiology in this lecture is:", correct:"Both are tightly regulated divalent cations whose imbalance produces predictable syndromes managed with specific salts matched to severity", wrong:["The two minerals behave identically in every physiological process", "Neither mineral requires any regulation once absorbed", "Only kidney disease can ever disturb either mineral's balance"]},
+];
+
+let userAnswers = {};
+const quizList = document.getElementById('quizList');
+const quizFilters = document.getElementById('quizFilters');
+
+const quizLevels = [...new Set(quizBank.map(q=>q.lvl))];
+quizFilters.innerHTML = quizLevels.map((c,i)=>`<button class="fc-filter ${i===0?'is-active':''}" data-lvl="${c}">${c}</button>`).join('');
+let currentQuizLevel = quizLevels[0];
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function buildQuiz(){
+  userAnswers = {};
+  const items = quizBank.filter(it=>it.lvl===currentQuizLevel);
+  document.getElementById('quizCount').textContent = items.length + ' questions';
+  quizList.innerHTML = items.map((item,qi)=>{
+    const opts = shuffle([item.correct, ...item.wrong]);
+    return `
+    <div class="q-item" data-qi="${qi}" data-correct="${item.correct.replace(/"/g,'&quot;')}">
+      <span class="q-num">QUESTION ${qi+1} OF ${items.length}</span>
+      <div class="q-text">${item.q}</div>
+      <div class="q-opts">
+        ${opts.map(o=>`<button class="q-opt" data-val="${o.replace(/"/g,'&quot;')}">${o}</button>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  updateScore();
+
+  quizList.querySelectorAll('.q-item').forEach(item=>{
+    const correct = item.dataset.correct;
+    item.querySelectorAll('.q-opt').forEach(opt=>{
+      opt.addEventListener('click', ()=>{
+        const qi = item.dataset.qi;
+        if(userAnswers[qi] !== undefined) return;
+        const val = opt.dataset.val;
+        userAnswers[qi] = (val === correct);
+        item.querySelectorAll('.q-opt').forEach(o=>{
+          o.disabled = true;
+          if(o.dataset.val === correct) o.classList.add('correct');
+          else if(o === opt) o.classList.add('wrong');
+        });
+        updateScore();
+      });
+    });
+  });
+}
+
+function updateScore(){
+  const answered = Object.keys(userAnswers).length;
+  const correct = Object.values(userAnswers).filter(Boolean).length;
+  document.getElementById('scoreVal').textContent = correct;
+  document.getElementById('scoreTotal').textContent = answered + ' answered';
+}
+
+quizFilters.querySelectorAll('.fc-filter').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    quizFilters.querySelectorAll('.fc-filter').forEach(b=>b.classList.remove('is-active'));
+    btn.classList.add('is-active');
+    currentQuizLevel = btn.dataset.lvl;
+    buildQuiz();
+  });
+});
+
+document.getElementById('resetQuiz').addEventListener('click', buildQuiz);
+buildQuiz();
+</script>
+</body>
+</html>
