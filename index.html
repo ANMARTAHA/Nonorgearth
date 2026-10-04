@@ -284,17 +284,17 @@
     padding:7px 14px; font-size:12.5px; font-family:var(--mono);
   }
   .fc-filter.is-active{ border-color:var(--panel-accent); color:var(--panel-accent); }
-  .fc-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:14px; align-items:start; }
-  .fc-card{ perspective:1200px; height:210px; }
+  .fc-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:14px; align-items:stretch; }
+  .fc-card{ perspective:1200px; min-height:130px; display:flex; }
   .fc-card.is-hidden{ display:none; }
   .fc-inner{
-    position:relative; width:100%; height:100%;
+    position:relative; width:100%; display:grid;
     transform-style:preserve-3d; transition:transform .5s cubic-bezier(.22,1,.36,1);
     cursor:pointer;
   }
   .fc-card.flipped .fc-inner{ transform:rotateY(180deg); }
   .fc-face{
-    position:absolute; inset:0; backface-visibility:hidden;
+    grid-area:1/1; position:relative; backface-visibility:hidden;
     border:1px solid var(--line); padding:16px; display:flex; flex-direction:column; justify-content:space-between;
     overflow:hidden;
   }
@@ -302,8 +302,8 @@
   .fc-face.back{ background:var(--bg-raised-2); transform:rotateY(180deg); border-color:var(--mg); }
   .fc-tag{ font-family:var(--mono); font-size:9.5px; color:var(--ink-faint); letter-spacing:.05em; flex:0 0 auto; }
   .fc-face.back .fc-tag{ color:var(--mg); }
-  .fc-q{ font-size:14.5px; color:var(--ink); line-height:1.4; overflow-y:auto; overflow-wrap:break-word; flex:1 1 auto; margin:6px 0; padding-right:4px; }
-  .fc-a{ font-size:13.5px; color:var(--ink); line-height:1.42; overflow-y:auto; overflow-wrap:break-word; flex:1 1 auto; margin:6px 0; padding-right:4px; }
+  .fc-q{ font-size:14.5px; color:var(--ink); line-height:1.4; overflow-wrap:break-word; flex:1 1 auto; margin:8px 0 10px; }
+  .fc-a{ font-size:13.5px; color:var(--ink); line-height:1.42; overflow-wrap:break-word; flex:1 1 auto; margin:8px 0 10px; }
   .fc-hint{ font-size:10.5px; color:var(--ink-faint); text-align:right; flex:0 0 auto; }
   .fc-q::-webkit-scrollbar, .fc-a::-webkit-scrollbar{ width:4px; }
   .fc-q::-webkit-scrollbar-thumb, .fc-a::-webkit-scrollbar-thumb{ background:var(--line); border-radius:2px; }
@@ -522,7 +522,7 @@
     <div class="panel-head">
       <h2>Flashcards</h2>
       <span class="tag" id="fcCount">— cards</span>
-      <p>Tap a card to flip it. Pick a difficulty level — 60 easy, 50 medium, 40 hard — to drill accordingly.</p>
+      <p>Tap a card to flip it. Pick a difficulty level — 25 easy, 15 medium, 10 hard — to drill accordingly.</p>
     </div>
     <div class="fc-filters" id="fcFilters"></div>
     <div class="fc-grid" id="fcGrid"></div>
@@ -533,7 +533,7 @@
     <div class="panel-head">
       <h2>Quiz Bank</h2>
       <span class="tag" id="quizCount">— questions</span>
-      <p>Options are shuffled per question. Pick a difficulty level — 60 easy, 50 medium, 40 hard — then pick an answer; right and wrong are marked instantly.</p>
+      <p>Options are shuffled per question. Pick a difficulty level — 25 easy, 15 medium, 10 hard — then pick an answer; right and wrong are marked instantly.</p>
     </div>
     <div class="fc-filters" id="quizFilters"></div>
     <div class="quiz-bar">
@@ -733,59 +733,61 @@ mmList.querySelectorAll('.mm-item').forEach(btn=>{
 });
 
 /* ============================================================
-   FLASHCARDS  (30+)
+   FLASHCARDS  (50)
    ============================================================ */
 const flashcards = [
-  {cat:"Level 1 — Easy", q:"Which elements make up Group 2, the alkaline earth metals?", a:"Beryllium (Be), magnesium (Mg), calcium (Ca), strontium (Sr), barium (Ba), and radioactive radium (Ra)."},
-  {cat:"Level 1 — Easy", q:"Together with the alkali metals, Group 2 is called which block?", a:"The s-block metals."},
-  {cat:"Level 1 — Easy", q:"How many electrons do alkaline earth metals have in the outer shell, and in which type of orbital?", a:"Two electrons, in an s-orbital."},
-  {cat:"Level 1 — Easy", q:"Which stable cation do alkaline earth metals form?", a:"M²⁺, by losing both outer electrons."},
-  {cat:"Level 1 — Easy", q:"Why are alkaline earth metals not found as pure metals in nature?", a:"They are very reactive, so they exist as M²⁺ cations in various minerals."},
-  {cat:"Level 1 — Easy", q:"In which mineral is beryllium found?", a:"Beryl, Be₃Al₂[Si₆O₁₈] (e.g., aquamarine, emerald)."},
-  {cat:"Level 1 — Easy", q:"Name the two main magnesium minerals.", a:"Magnesite (MgCO₃) and dolomite (MgCO₃·CaCO₃)."},
-  {cat:"Level 1 — Easy", q:"Where is calcium found in nature?", a:"Limestone, chalk, and marble."},
-  {cat:"Level 1 — Easy", q:"What is the general formula of Group 2 oxides, and are they acidic or basic?", a:"MO; they are generally basic."},
-  {cat:"Level 1 — Easy", q:"For which Group 2 element are peroxides NOT known?", a:"Beryllium."},
-  {cat:"Level 1 — Easy", q:"Why is anhydrous calcium chloride (CaCl₂) used as a desiccant?", a:"It has a very strong affinity for water."},
-  {cat:"Level 1 — Easy", q:"What is 'milk of magnesia' and what is it used for?", a:"A suspension of magnesium hydroxide, Mg(OH)₂, used as an antacid (mild base)."},
-  {cat:"Level 1 — Easy", q:"What effect do most soluble Mg salts have in the human body?", a:"They act as a laxative."},
-  {cat:"Level 1 — Easy", q:"Which serious disease results from inhaling beryllium compounds?", a:"Chronic Beryllium Disease (CBD)."},
-  {cat:"Level 1 — Easy", q:"How much magnesium does the average body contain?", a:"About 24 g."},
-  {cat:"Level 1 — Easy", q:"What fraction of body magnesium is stored in bones?", a:"About 50%; the rest is in muscles and soft tissues."},
-  {cat:"Level 1 — Easy", q:"List good dietary sources of magnesium.", a:"Green vegetables, nuts, whole grains, and milk."},
-  {cat:"Level 1 — Easy", q:"Where is magnesium absorbed and how is it excreted?", a:"Absorbed mainly in the ileum and colon; excreted by the kidneys, which tightly regulate its level."},
-  {cat:"Level 1 — Easy", q:"What is the role of Mg²⁺ in chlorophyll?", a:"It forms the redox-active center, making it essential for photosynthesis in plants."},
-  {cat:"Level 1 — Easy", q:"What is the standard emergency treatment of eclampsia?", a:"I.V. magnesium sulfate (MgSO₄)."},
-  {cat:"Level 1 — Easy", q:"How much calcium does the body contain and where is 99% of it stored?", a:"About 1000 g; 99% is in bones and teeth (a dynamic reservoir)."},
-  {cat:"Level 1 — Easy", q:"Which is the key hormone that raises blood calcium?", a:"Parathyroid hormone (PTH)."},
-  {cat:"Level 1 — Easy", q:"What percentage of calcium carbonate is elemental calcium?", a:"40% (1000 mg of salt gives 400 mg Ca²⁺)."},
-  {cat:"Level 1 — Easy", q:"Which calcium supplement is the most common and least expensive?", a:"Calcium carbonate."},
-  {cat:"Level 1 — Easy", q:"How is severe acute hypocalcemia treated?", a:"Slow intravenous injection of 10% calcium gluconate, with monitoring of plasma Ca²⁺ and ECG."},
-  {cat:"Level 2 — Medium", q:"How do the electropositive character and reducing power change down Group 2?", a:"They increase: elements become increasingly more electropositive, and are strong reducing agents that easily form M²⁺."},
-  {cat:"Level 2 — Medium", q:"How do hydroxide solubility and thermal stability change from Mg to Ba, and which hydroxide is the exception as a base?", a:"Both increase from Mg to Ba; Be(OH)₂ is the exception (it does not react as a base)."},
-  {cat:"Level 2 — Medium", q:"What are the properties of magnesium halides (MgCl₂, MgBr₂, MgI₂)?", a:"They are hygroscopic: they absorb moisture from the air."},
-  {cat:"Level 2 — Medium", q:"Describe the isotopes of magnesium mentioned in the lecture.", a:"Stable: ²⁴Mg (79%), ²⁵Mg, ²⁶Mg. ²⁸Mg is radioactive with a half-life of 21 hr."},
-  {cat:"Level 2 — Medium", q:"Why must ATP bind magnesium?", a:"ATP must bind an Mg²⁺ ion (Mg-ATP) to be biologically active."},
-  {cat:"Level 2 — Medium", q:"How does Mg²⁺ affect DNA and RNA?", a:"It stabilizes their structure, increasing their melting points."},
-  {cat:"Level 2 — Medium", q:"Why can magnesium be lost when vegetables are boiled?", a:"Magnesium is water-soluble, so it leaches into the water."},
-  {cat:"Level 2 — Medium", q:"What causes hypermagnesemia and what are its effects?", a:"Often kidney failure; causes muscle weakness and arrhythmia (a rare condition)."},
-  {cat:"Level 2 — Medium", q:"What can cause hypomagnesemia, and which other imbalances often follow?", a:"GI losses (e.g., diarrhea), alcoholism, or certain drugs; leads to hypocalcemia, hypokalemia, and hyponatremia."},
-  {cat:"Level 2 — Medium", q:"Why are magnesium salts useful as osmotic laxatives?", a:"Their poor absorption from the gut keeps water in the intestines."},
-  {cat:"Level 2 — Medium", q:"What is magnesium trisilicate used for and how does it work?", a:"Peptic ulcers: it increases gastric pH and forms a protective gel over the stomach lining."},
-  {cat:"Level 2 — Medium", q:"Why are magnesium salts often combined with aluminum salts in antacids?", a:"Magnesium gives a rapid effect; aluminum causes constipation, balancing the side effects."},
-  {cat:"Level 2 — Medium", q:"Why must the magnesium dose be reduced in renal impairment?", a:"The kidneys are the primary route of magnesium excretion."},
-  {cat:"Level 2 — Medium", q:"What is the intracellular to extracellular calcium gradient, and why does it matter?", a:"1:10,000; it is critical for cellular responsiveness."},
-  {cat:"Level 2 — Medium", q:"By which three actions does PTH raise blood calcium?", a:"Increasing bone resorption, stimulating gut uptake, and promoting kidney reabsorption."},
-  {cat:"Level 3 — Hard", q:"What is the root cause of renal osteodystrophy?", a:"Chronic kidney failure impairs the final step of vitamin D activation (calcidiol → calcitriol), causing low calcitriol."},
-  {cat:"Level 3 — Hard", q:"Describe the 'vicious cycle' of mineral imbalance in renal osteodystrophy.", a:"Low calcitriol → poor Ca absorption (hypocalcemia); failing kidneys retain phosphate (hyperphosphatemia); phosphate complexes free Ca; PTH is released and strips calcium from bone."},
-  {cat:"Level 3 — Hard", q:"What are the three treatment strategies for renal osteodystrophy?", a:"Control phosphate (binders + dialysis); replace hormone (synthetic calcitriol); calcium supplementation."},
-  {cat:"Level 3 — Hard", q:"How has the view of calcium intake and kidney stones reversed?", a:"Old: low calcium prevents stones. New: low calcium raises calcium oxalate stone risk by increasing oxalate absorption; ~1200 mg/day can cut recurrence by ~50%, and supplements do not raise risk in healthy people."},
-  {cat:"Level 3 — Hard", q:"Which drugs interact with magnesium salts/antacids, and what is the clinical advice?", a:"Iron products, nitrofurantoin, proguanil, ACE inhibitors, aspirin, penicillamine (reduced absorption). Take a full history and manage antacid timing."},
-  {cat:"Level 3 — Hard", q:"Why should calcium carbonate be taken with food, and what are its side effects and a remedy?", a:"Its absorption is pH-dependent, so take with food. It reacts with stomach acid giving CO₂ (gas, bloating); co-administration with Mg salts helps prevent constipation."},
-  {cat:"Level 3 — Hard", q:"Explain the mechanism and clinical view of calcium in hypertension.", a:"Calcium influences smooth muscle contraction; higher levels can reduce vasoconstrictor tone and sympathetic activity. Supplements can lower BP (esp. salt-sensitive) but are not justified as sole treatment of mild HTN."},
-  {cat:"Level 3 — Hard", q:"Compare historical and modern calcium intake and the consequences.", a:"About 2000–3000 mg/day in the Stone Age vs ~600 mg/day today; the deficiency is linked to osteoporosis, high blood pressure, and colon cancer."},
-  {cat:"Level 3 — Hard", q:"Name the three life stages with increased calcium need and the details given.", a:"Childhood/adolescence (peak bone strength until ~18); pregnancy/lactation (~30 g for fetal skeleton; milk 160–300 mg/day); old age (counteract bone loss)."},
-  {cat:"Level 3 — Hard", q:"State the calcium–weight management hypothesis and its evidential status.", a:"A low-calorie, high-calcium diet may fight obesity by increasing energy metabolism; ~1200 mg/day may reduce overweight risk, but more long-term, large-scale studies are needed."},
+  {cat:"Level 1 — Easy", q:"Which group contains the alkaline earth metals?", a:"Group 2 of the periodic table."},
+  {cat:"Level 1 — Easy", q:"Name the alkaline earth metals listed in the lecture.", a:"Beryllium, magnesium, calcium, strontium, barium, and radium."},
+  {cat:"Level 1 — Easy", q:"How many electrons are present in the outer shell of alkaline earth metals?", a:"Two electrons."},
+  {cat:"Level 1 — Easy", q:"What stable cation do alkaline earth metals commonly form?", a:"M²⁺."},
+  {cat:"Level 1 — Easy", q:"Why are alkaline earth metals not found as pure elemental metals in nature?", a:"Because they are very reactive."},
+  {cat:"Level 1 — Easy", q:"In which mineral is beryllium found?", a:"Beryl."},
+  {cat:"Level 1 — Easy", q:"Name two minerals containing magnesium.", a:"Magnesite and dolomite."},
+  {cat:"Level 1 — Easy", q:"What is the general formula of alkaline earth metal oxides?", a:"MO."},
+  {cat:"Level 1 — Easy", q:"What is the general nature of alkaline earth metal oxides?", a:"They are generally basic."},
+  {cat:"Level 1 — Easy", q:"Which alkaline earth metal does not have a known peroxide according to the lecture?", a:"Beryllium."},
+  {cat:"Level 1 — Easy", q:"What happens to the water solubility and thermal stability of alkaline earth metal hydroxides from Mg to Ba?", a:"Both increase."},
+  {cat:"Level 1 — Easy", q:"What does hygroscopic mean in relation to magnesium halides?", a:"They absorb moisture from the air."},
+  {cat:"Level 1 — Easy", q:"What is the clinical importance of beryllium compounds?", a:"They are extremely poisonous and severely limit clinical use."},
+  {cat:"Level 1 — Easy", q:"Which magnesium isotope has approximately 79% occurrence?", a:"²⁴Mg."},
+  {cat:"Level 1 — Easy", q:"What is the half-life of radioactive ²⁸Mg?", a:"21 hours."},
+  {cat:"Level 1 — Easy", q:"What is Milk of Magnesia?", a:"A suspension of magnesium hydroxide, Mg(OH)₂."},
+  {cat:"Level 1 — Easy", q:"What is magnesium hydroxide commonly used for?", a:"As an antacid and laxative."},
+  {cat:"Level 1 — Easy", q:"What are important dietary sources of magnesium?", a:"Green vegetables, nuts, whole grains, and milk."},
+  {cat:"Level 1 — Easy", q:"Where is magnesium primarily absorbed?", a:"In the ileum and colon."},
+  {cat:"Level 1 — Easy", q:"What is the main route of magnesium excretion?", a:"The kidneys."},
+  {cat:"Level 1 — Easy", q:"What is the approximate amount of magnesium in the average human body?", a:"About 24 g."},
+  {cat:"Level 1 — Easy", q:"What is the approximate amount of calcium in the human body?", a:"About 1000 g."},
+  {cat:"Level 1 — Easy", q:"What percentage of body calcium is stored in bones and teeth?", a:"Approximately 99%."},
+  {cat:"Level 1 — Easy", q:"What is the key hormone that raises blood calcium?", a:"Parathyroid hormone (PTH)."},
+  {cat:"Level 1 — Easy", q:"How should calcium carbonate be administered to improve absorption?", a:"It should be taken with food."},
+
+  {cat:"Level 2 — Medium", q:"Why do alkaline earth metals readily form M²⁺ ions?", a:"Their chemistry is characterized by loss of both outer-shell electrons, producing stable M²⁺ cations."},
+  {cat:"Level 2 — Medium", q:"How does electropositivity change down Group 2?", a:"It increases as the group is descended."},
+  {cat:"Level 2 — Medium", q:"Why are magnesium salts useful as osmotic laxatives?", a:"Their poor absorption from the gut allows them to exert an osmotic effect."},
+  {cat:"Level 2 — Medium", q:"Why should magnesium doses be reduced in renal impairment?", a:"The kidneys are the primary route of magnesium excretion."},
+  {cat:"Level 2 — Medium", q:"What is the emergency treatment for symptomatic hypomagnesemia?", a:"IV or IM magnesium sulfate, especially when levels are critically low."},
+  {cat:"Level 2 — Medium", q:"What is an important emergency cardiovascular use of IV magnesium sulfate?", a:"Treatment of serious, life-threatening irregular heartbeats (arrhythmia)."},
+  {cat:"Level 2 — Medium", q:"What is the role of IV magnesium sulfate in eclampsia?", a:"It is the standard emergency treatment for this life-threatening hypertensive disorder in pregnancy."},
+  {cat:"Level 2 — Medium", q:"How does magnesium hydroxide work as an antacid and laxative?", a:"It neutralizes stomach acid and draws water into the intestines through an osmotic effect."},
+  {cat:"Level 2 — Medium", q:"What is the role of magnesium trisilicate in gastrointestinal treatment?", a:"It is used for peptic ulcers, increases gastric pH, and forms a protective gel over the stomach lining."},
+  {cat:"Level 2 — Medium", q:"What problem can magnesium-containing antacids cause with other medications?", a:"They can reduce absorption of concurrently taken drugs, including iron products and certain antibiotics."},
+  {cat:"Level 2 — Medium", q:"What three mechanisms does PTH use to raise blood calcium?", a:"Increasing bone resorption, stimulating gut calcium uptake, and promoting kidney calcium reabsorption."},
+  {cat:"Level 2 — Medium", q:"What are the three life stages identified as requiring increased calcium intake?", a:"Childhood/adolescence, pregnancy/lactation, and old age."},
+  {cat:"Level 2 — Medium", q:"What happens to calcium metabolism in chronic kidney failure?", a:"Impaired kidney function disrupts calcium and phosphate balance and reduces vitamin D activation."},
+  {cat:"Level 2 — Medium", q:"What is the main goal of treatment in renal osteodystrophy?", a:"To break the cycle of mineral imbalance by controlling phosphate, replacing calcitriol, and supplementing calcium."},
+  {cat:"Level 2 — Medium", q:"Why can magnesium salts be combined with calcium carbonate?", a:"Co-administration with magnesium salts can help prevent calcium carbonate’s common side effect of constipation."},
+
+  {cat:"Level 3 — Hard", q:"Explain the relationship between renal failure, calcitriol, calcium absorption, phosphate, and bone resorption in renal osteodystrophy.", a:"In renal failure, activation of vitamin D to calcitriol is depressed. Low calcitriol reduces dietary calcium absorption, producing hypocalcemia. At the same time, failing kidneys cannot adequately excrete phosphate, causing hyperphosphatemia. Excess phosphate binds remaining free calcium, further reducing active calcium. The resulting low calcium stimulates PTH, which promotes bone resorption."},
+  {cat:"Level 3 — Hard", q:"Why does the skeleton function as an important component of calcium homeostasis?", a:"About 99% of body calcium is stored in bones and teeth, which act as a dynamic reservoir. When blood calcium needs to be raised, PTH can stimulate bone resorption and release Ca²⁺."},
+  {cat:"Level 3 — Hard", q:"Why can low calcium intake paradoxically increase calcium oxalate kidney-stone risk?", a:"According to the lecture, low calcium intake increases oxalate absorption, which increases the risk of calcium oxalate stones. Higher calcium intake, around 1200 mg/day, can reduce recurrence by approximately 50%."},
+  {cat:"Level 3 — Hard", q:"Why is PTH central to the regulation of blood calcium?", a:"PTH raises blood calcium through three mechanisms identified in the lecture: increasing bone resorption, stimulating gut calcium uptake, and promoting kidney calcium reabsorption."},
+  {cat:"Level 3 — Hard", q:"How can calcium influence blood pressure according to the lecture?", a:"Calcium influences smooth muscle contraction. Higher calcium levels can reduce vasoconstrictor tone and sympathetic nervous system activity."},
+  {cat:"Level 3 — Hard", q:"Why is adequate calcium intake during early life important for osteoporosis prevention?", a:"Adequate intake, particularly during the first three decades, is important for building peak bone density and slowing age-related bone loss."},
+  {cat:"Level 3 — Hard", q:"A patient with renal impairment needs magnesium. What principle should guide magnesium dosing?", a:"The dose should be reduced because the kidneys are the primary route of magnesium excretion."},
+  {cat:"Level 3 — Hard", q:"Why can magnesium-containing antacids interfere with other medications?", a:"Magnesium salts can reduce absorption of several concurrently taken drugs, including iron products, certain antibiotics, antimalarials, ACE inhibitors, aspirin, and penicillamine; therefore, medication history and timing should be carefully managed."},
+  {cat:"Level 3 — Hard", q:"What is the clinical reasoning behind using magnesium sulfate in both hypomagnesemia and certain emergencies?", a:"IV or IM magnesium sulfate is used to correct symptomatic hypomagnesemia, while IV magnesium sulfate is also used for serious life-threatening arrhythmias and is the standard emergency treatment for eclampsia."},
+  {cat:"Level 3 — Hard", q:"Explain why calcium carbonate should be taken with food and why magnesium may be co-administered.", a:"Calcium carbonate absorption is pH-dependent and is improved when taken with food. Calcium carbonate can cause gas and bloating from CO₂ production and can cause constipation; co-administration with magnesium salts can help prevent the constipation."},
 ];
 
 const fcGrid = document.getElementById('fcGrid');
@@ -835,59 +837,64 @@ fcFilters.querySelectorAll('.fc-filter').forEach(btn=>{
 });
 
 /* ============================================================
-   QUIZ BANK (30+ MCQ, shuffled options)
+   QUIZ BANK (50 MCQ, shuffled options)
    ============================================================ */
 const quizBank = [
-  {lvl:"Level 1 — Easy", q:"Group 2 of the periodic table is called:", correct:"Alkaline earth metals", wrong:["Alkali metals", "Halogens", "Transition metals"]},
-  {lvl:"Level 1 — Easy", q:"How many valence electrons do alkaline earth metals have?", correct:"Two", wrong:["One", "Three", "Four"]},
-  {lvl:"Level 1 — Easy", q:"The stable cation formed by alkaline earth metals is:", correct:"M²⁺", wrong:["M⁺", "M³⁺", "M⁻"]},
-  {lvl:"Level 1 — Easy", q:"Which Group 2 element is radioactive?", correct:"Radium (Ra)", wrong:["Barium (Ba)", "Strontium (Sr)", "Calcium (Ca)"]},
-  {lvl:"Level 1 — Easy", q:"Beryllium occurs in the mineral:", correct:"Beryl", wrong:["Magnesite", "Dolomite", "Limestone"]},
-  {lvl:"Level 1 — Easy", q:"Dolomite has the formula:", correct:"MgCO₃·CaCO₃", wrong:["MgCO₃ only", "CaCO₃ only", "Be₃Al₂[Si₆O₁₈]"]},
-  {lvl:"Level 1 — Easy", q:"Calcium is found in nature in:", correct:"Limestone, chalk and marble", wrong:["Aquamarine and emerald", "Magnesite", "Beryl"]},
-  {lvl:"Level 1 — Easy", q:"Peroxides are NOT known for:", correct:"Beryllium", wrong:["Magnesium", "Calcium", "Barium"]},
-  {lvl:"Level 1 — Easy", q:"The general formula of Group 2 oxides is:", correct:"MO", wrong:["M₂O", "MO₂", "M₂O₃"]},
-  {lvl:"Level 1 — Easy", q:"Which compound is a common drying agent (desiccant)?", correct:"Anhydrous calcium chloride", wrong:["Magnesium hydroxide", "Calcium carbonate", "Magnesium trisilicate"]},
-  {lvl:"Level 1 — Easy", q:"The main ingredient of 'Milk of Magnesia' is:", correct:"Magnesium hydroxide", wrong:["Magnesium sulfate", "Magnesium trisilicate", "Magnesium glycerophosphate"]},
-  {lvl:"Level 1 — Easy", q:"Most soluble Mg salts act in the body as a:", correct:"Laxative", wrong:["Anticoagulant", "Diuretic", "Antibiotic"]},
-  {lvl:"Level 1 — Easy", q:"Inhaling beryllium compounds mainly causes:", correct:"Chronic Beryllium Disease", wrong:["Osteoporosis", "Renal osteodystrophy", "Hypermagnesemia"]},
-  {lvl:"Level 1 — Easy", q:"The average body contains about how much magnesium?", correct:"24 g", wrong:["1000 g", "2.4 g", "240 g"]},
-  {lvl:"Level 1 — Easy", q:"The average body contains about how much calcium?", correct:"1000 g", wrong:["24 g", "100 g", "30 g"]},
-  {lvl:"Level 1 — Easy", q:"Mg²⁺ is essential in plants because it forms the center of:", correct:"Chlorophyll", wrong:["Haemoglobin", "Cellulose", "Starch"]},
-  {lvl:"Level 1 — Easy", q:"Which is a good dietary source of magnesium?", correct:"Green vegetables, nuts, whole grains and milk", wrong:["Refined sugar", "Soft drinks", "Table salt"]},
-  {lvl:"Level 1 — Easy", q:"Magnesium is mainly excreted by the:", correct:"Kidneys", wrong:["Lungs", "Skin", "Salivary glands"]},
-  {lvl:"Level 1 — Easy", q:"The standard emergency treatment of eclampsia is:", correct:"I.V. magnesium sulfate", wrong:["Oral calcium carbonate", "I.M. calcium gluconate", "Milk of magnesia"]},
-  {lvl:"Level 1 — Easy", q:"The key hormone that raises blood calcium is:", correct:"Parathyroid hormone (PTH)", wrong:["Insulin", "Growth hormone", "Adrenaline"]},
-  {lvl:"Level 1 — Easy", q:"Where is 99% of body calcium stored?", correct:"Bones and teeth", wrong:["Plasma", "Lymph", "Muscles"]},
-  {lvl:"Level 1 — Easy", q:"Calcium carbonate contains what percentage of elemental calcium?", correct:"40%", wrong:["10%", "25%", "90%"]},
-  {lvl:"Level 1 — Easy", q:"The most common and least expensive calcium supplement is:", correct:"Calcium carbonate", wrong:["Calcium gluconate", "Calcium lactate", "Calcium aspartate"]},
-  {lvl:"Level 1 — Easy", q:"Severe acute hypocalcemia is treated with:", correct:"Slow I.V. injection of 10% calcium gluconate", wrong:["Oral magnesium glycerophosphate", "Rapid I.M. magnesium sulfate", "Calcium carbonate tablets with food"]},
-  {lvl:"Level 1 — Easy", q:"Ca²⁺ has a universal role as messenger and mediator of:", correct:"Cardiac, skeletal and smooth muscle contraction", wrong:["Skeletal muscle contraction only", "Bone formation only", "Chlorophyll synthesis"]},
-  {lvl:"Level 2 — Medium", q:"Going down Group 2, the elements become:", correct:"Increasingly more electropositive", wrong:["Less electropositive", "Non-metallic", "Unchanged in reactivity"]},
-  {lvl:"Level 2 — Medium", q:"Which Group 2 hydroxide does NOT react as a base?", correct:"Be(OH)₂", wrong:["Mg(OH)₂", "Ca(OH)₂", "Ba(OH)₂"]},
-  {lvl:"Level 2 — Medium", q:"From Mg to Ba, hydroxide water solubility and thermal stability:", correct:"Both increase", wrong:["Both decrease", "Solubility rises, stability falls", "Neither changes"]},
-  {lvl:"Level 2 — Medium", q:"Magnesium halides (MgCl₂, MgBr₂, MgI₂) are:", correct:"Hygroscopic", wrong:["Insoluble and inert", "Gaseous at room temperature", "Non-ionic"]},
-  {lvl:"Level 2 — Medium", q:"Which statement about ²⁸Mg is correct?", correct:"It is radioactive with a half-life of 21 hr", wrong:["It is the most abundant stable isotope (79%)", "It is radioactive with a half-life of 21 days", "It is stable"]},
-  {lvl:"Level 2 — Medium", q:"For ATP to be biologically active it must bind:", correct:"A magnesium ion", wrong:["A calcium ion", "A beryllium ion", "No metal ion"]},
-  {lvl:"Level 2 — Medium", q:"Mg²⁺ affects DNA and RNA by:", correct:"Stabilizing their structure and increasing melting points", wrong:["Lowering their melting points", "Degrading them", "Having no effect"]},
-  {lvl:"Level 2 — Medium", q:"Magnesium can be lost when vegetables are boiled because it is:", correct:"Water-soluble", wrong:["Volatile", "Oxidized by heat", "Insoluble"]},
-  {lvl:"Level 2 — Medium", q:"Hypermagnesemia is often due to _____ and causes _____.", correct:"Kidney failure; muscle weakness and arrhythmia", wrong:["Alcoholism; hypokalemia", "Diarrhea; hyponatremia", "High milk intake; osteoporosis"]},
-  {lvl:"Level 2 — Medium", q:"Hypomagnesemia often leads to which other imbalances?", correct:"Hypocalcemia, hypokalemia and hyponatremia", wrong:["Hypercalcemia only", "Hyperkalemia only", "No other imbalance"]},
-  {lvl:"Level 2 — Medium", q:"Magnesium trisilicate is used in peptic ulcers because it:", correct:"Increases gastric pH and forms a protective gel", wrong:["Acts as an osmotic laxative", "Raises blood calcium", "Treats eclampsia"]},
-  {lvl:"Level 2 — Medium", q:"Why are magnesium and aluminum salts combined in antacids?", correct:"Aluminum causes constipation, balancing magnesium's laxative effect", wrong:["Aluminum gives rapid effect and magnesium constipates", "Both cause diarrhea", "Aluminum increases drug absorption"]},
-  {lvl:"Level 2 — Medium", q:"In renal impairment the magnesium dose must be reduced because:", correct:"Kidneys are the primary route of magnesium excretion", wrong:["Liver metabolizes magnesium", "Magnesium is exhaled", "Magnesium is not absorbed"]},
-  {lvl:"Level 2 — Medium", q:"The intracellular to extracellular calcium gradient is about:", correct:"1:10,000", wrong:["1:100", "1:1", "10,000:1"]},
-  {lvl:"Level 2 — Medium", q:"PTH raises blood calcium by:", correct:"Increasing bone resorption, gut uptake and kidney reabsorption", wrong:["Increasing bone formation and urinary excretion", "Decreasing gut uptake", "Blocking vitamin D activation"]},
-  {lvl:"Level 3 — Hard", q:"The root cause of renal osteodystrophy is:", correct:"Failing kidneys cannot convert calcidiol to calcitriol", wrong:["The liver cannot form calcidiol", "Excess calcitriol production", "Excess dietary calcium"]},
-  {lvl:"Level 3 — Hard", q:"In renal failure, excess blood phosphate:", correct:"Binds free calcium, further reducing active calcium", wrong:["Raises free calcium", "Suppresses PTH release", "Increases calcitriol formation"]},
-  {lvl:"Level 3 — Hard", q:"Which sequence correctly describes the vicious cycle?", correct:"Low calcitriol → hypocalcemia + hyperphosphatemia → Ca–phosphate complexation → PTH release strips bone calcium", wrong:["High calcitriol → hypercalcemia → PTH suppressed", "Low PTH → hypocalcemia → bone formation", "Hyperphosphatemia → high free Ca → bone strengthening"]},
-  {lvl:"Level 3 — Hard", q:"Which set of treatments breaks the cycle in renal osteodystrophy?", correct:"Phosphate binders/dialysis, synthetic calcitriol, calcium supplements", wrong:["Phosphate supplements and calcium restriction", "I.V. magnesium sulfate only", "Diuretics and low-calcium diet"]},
-  {lvl:"Level 3 — Hard", q:"What is the current conclusion on calcium intake and kidney stones?", correct:"About 1200 mg/day can reduce recurrence by ~50%; supplements don't raise risk in healthy people", wrong:["Low calcium prevents stones", "Supplements always raise stone risk", "Calcium intake has no relation to stones"]},
-  {lvl:"Level 3 — Hard", q:"Low calcium intake raises calcium oxalate stone risk because it:", correct:"Increases oxalate absorption", wrong:["Decreases oxalate absorption", "Lowers urinary oxalate", "Suppresses PTH"]},
-  {lvl:"Level 3 — Hard", q:"Which statement on magnesium drug interactions is correct?", correct:"Mg salts reduce absorption of iron, nitrofurantoin, proguanil, ACE inhibitors, aspirin and penicillamine, so timing must be managed", wrong:["Mg salts increase absorption of these drugs", "They only interact with I.V. drugs", "Timing is irrelevant"]},
-  {lvl:"Level 3 — Hard", q:"Which statement about calcium carbonate is correct?", correct:"Take with food (pH-dependent absorption); CO₂ may cause bloating; Mg salts help prevent constipation", wrong:["Take fasting; it causes diarrhea", "It contains 4% elemental calcium", "It does not react with stomach acid"]},
-  {lvl:"Level 3 — Hard", q:"Calcium in hypertension: the lecture's clinical view is that supplementation:", correct:"Can reduce BP (esp. salt-sensitive) but is not justified as sole treatment for mild HTN", wrong:["Is first-line sole treatment for mild HTN", "Raises vasoconstrictor tone", "Has no effect on BP"]},
-  {lvl:"Level 3 — Hard", q:"Which statement on calcium intake over time is correct?", correct:"It fell from 2000–3000 mg/day (Stone Age) to ~600 mg/day, linked to osteoporosis, high BP and colon cancer", wrong:["It rose from 600 to 2000–3000 mg/day", "It is unchanged, ~1200 mg/day", "It fell to 600 mg/day, which protects against osteoporosis"]},
+  // ---------- LEVEL 1 — EASY (25) ----------
+  {lvl:"Level 1 — Easy", q:"The alkaline earth metals belong to which group of the periodic table?", correct:"Group 2", wrong:["Group 1","Group 17","Group 18"]},
+  {lvl:"Level 1 — Easy", q:"Which of the following is an alkaline earth metal?", correct:"Magnesium", wrong:["Sodium","Potassium","Aluminum"]},
+  {lvl:"Level 1 — Easy", q:"Which alkaline earth metal is radioactive?", correct:"Radium", wrong:["Beryllium","Magnesium","Calcium"]},
+  {lvl:"Level 1 — Easy", q:"How many electrons do alkaline earth metals have in their outer shell?", correct:"Two", wrong:["One","Three","Eight"]},
+  {lvl:"Level 1 — Easy", q:"The two outer-shell electrons of alkaline earth metals are located in:", correct:"An s-orbital", wrong:["A p-orbital","A d-orbital","An f-orbital"]},
+  {lvl:"Level 1 — Easy", q:"The stable cation commonly formed by alkaline earth metals is:", correct:"M²⁺", wrong:["M⁺","M³⁺","M⁻"]},
+  {lvl:"Level 1 — Easy", q:"Why are alkaline earth metals not generally found as pure elemental metals in nature?", correct:"They are very reactive", wrong:["They are radioactive","They are gases","They are insoluble"]},
+  {lvl:"Level 1 — Easy", q:"Beryllium occurs naturally in:", correct:"Beryl", wrong:["Magnesite","Limestone","Dolomite"]},
+  {lvl:"Level 1 — Easy", q:"Magnesium is found in:", correct:"Magnesite and dolomite", wrong:["Beryl only","Limestone only","Marble only"]},
+  {lvl:"Level 1 — Easy", q:"The general formula of alkaline earth metal oxides is:", correct:"MO", wrong:["M₂O","MO₂","M₂O₃"]},
+  {lvl:"Level 1 — Easy", q:"The oxides of alkaline earth metals are generally:", correct:"Basic", wrong:["Acidic","Neutral","Radioactive"]},
+  {lvl:"Level 1 — Easy", q:"Which alkaline earth metal does NOT form a known peroxide according to the lecture?", correct:"Beryllium", wrong:["Magnesium","Calcium","Barium"]},
+  {lvl:"Level 1 — Easy", q:"Which compound is commonly known as Milk of Magnesia?", correct:"Mg(OH)₂", wrong:["MgCl₂","MgSO₄","MgCO₃"]},
+  {lvl:"Level 1 — Easy", q:"Magnesium hydroxide is commonly used as:", correct:"An antacid", wrong:["An antibiotic","An anticoagulant","A vitamin"]},
+  {lvl:"Level 1 — Easy", q:"Anhydrous calcium chloride is commonly used as a:", correct:"Drying agent", wrong:["Laxative","Hormone","Antacid"]},
+  {lvl:"Level 1 — Easy", q:"Which magnesium salts are described as hygroscopic?", correct:"MgCl₂, MgBr₂, and MgI₂", wrong:["MgCO₃ only","MgSO₄ only","Mg(OH)₂ only"]},
+  {lvl:"Level 1 — Easy", q:"Magnesium is important as a cofactor in more than:", correct:"300 enzymatic processes", wrong:["30 enzymatic processes","100 enzymatic processes","1000 enzymatic processes"]},
+  {lvl:"Level 1 — Easy", q:"ATP must bind to which ion to become biologically active?", correct:"Mg²⁺", wrong:["Ca²⁺","Na⁺","K⁺"]},
+  {lvl:"Level 1 — Easy", q:"Magnesium is essential for photosynthesis because Mg²⁺ forms the:", correct:"Redox-active center in chlorophyll", wrong:["Protein center of DNA","Calcium reservoir","Phosphate-binding center"]},
+  {lvl:"Level 1 — Easy", q:"Approximately what percentage of magnesium in the body is stored in bones?", correct:"50%", wrong:["10%","25%","99%"]},
+  {lvl:"Level 1 — Easy", q:"Which magnesium compound is the main ingredient of Milk of Magnesia?", correct:"Magnesium hydroxide", wrong:["Magnesium chloride","Magnesium sulfate","Magnesium carbonate"]},
+  {lvl:"Level 1 — Easy", q:"Which hormone is described as the key hormone regulating blood calcium?", correct:"Parathyroid hormone", wrong:["Insulin","Growth hormone","Thyroid hormone"]},
+  {lvl:"Level 1 — Easy", q:"Approximately how much calcium does the human body contain?", correct:"1000 g", wrong:["24 g","100 g","500 g"]},
+  {lvl:"Level 1 — Easy", q:"The most common and least expensive calcium supplement mentioned is:", correct:"Calcium carbonate", wrong:["Calcium chloride","Calcium lactate","Calcium aspartate"]},
+  {lvl:"Level 1 — Easy", q:"Calcium carbonate contains approximately what percentage of elemental calcium?", correct:"40%", wrong:["10%","25%","60%"]},
+
+  // ---------- LEVEL 2 — MEDIUM (15) ----------
+  {lvl:"Level 2 — Medium", q:"Which statement best describes the chemical behavior of alkaline earth metals?", correct:"They lose both outer-shell electrons and form stable M²⁺ ions.", wrong:["They tend to gain two electrons and form M²⁻ ions.","They lose one electron and form M⁺ ions.","They retain both outer-shell electrons and remain neutral."]},
+  {lvl:"Level 2 — Medium", q:"As alkaline earth metals are considered from the top toward the bottom of the group, which trend is stated in the lecture?", correct:"They become increasingly electropositive.", wrong:["They become increasingly electronegative.","They become less reactive because they gain electrons.","Their oxides become acidic."]},
+  {lvl:"Level 2 — Medium", q:"A patient requires a magnesium-containing laxative. Which property of magnesium salts explains this use?", correct:"Poor absorption from the gut producing an osmotic effect", wrong:["Complete absorption from the gastrointestinal tract","Strong protein binding","Increased renal absorption"]},
+  {lvl:"Level 2 — Medium", q:"Why should the magnesium dose be reduced in a patient with renal impairment?", correct:"Magnesium is mainly excreted through the kidneys.", wrong:["Magnesium is mainly excreted through the lungs.","Magnesium is stored only in the liver.","Magnesium cannot enter the bloodstream."]},
+  {lvl:"Level 2 — Medium", q:"A patient with symptomatic hypomagnesemia requires emergency correction. Which treatment is identified in the lecture?", correct:"IV or IM magnesium sulfate", wrong:["Oral calcium carbonate","Oral magnesium hydroxide only","Calcium chloride as a drying agent"]},
+  {lvl:"Level 2 — Medium", q:"Which pairing correctly matches the magnesium preparation with its clinical application?", correct:"Magnesium hydroxide — Milk of Magnesia/antacid", wrong:["Magnesium trisilicate — treatment of hypomagnesemia by IV injection","Magnesium sulfate — drying agent","Magnesium chloride — treatment of osteoporosis"]},
+  {lvl:"Level 2 — Medium", q:"Why may magnesium and aluminum salts be combined in antacid formulations?", correct:"To balance their gastrointestinal side effects.", wrong:["To increase radioactive activity","To eliminate magnesium absorption","To convert magnesium into calcium"]},
+  {lvl:"Level 2 — Medium", q:"Which situation is most consistent with hypomagnesemia described in the lecture?", correct:"Diarrhea causing gastrointestinal magnesium loss.", wrong:["Kidney failure causing high Mg²⁺","Increased magnesium storage in bones","Excessive calcium absorption"]},
+  {lvl:"Level 2 — Medium", q:"Which of the following correctly describes PTH action?", correct:"It raises blood calcium by increasing bone resorption, gut uptake, and kidney reabsorption.", wrong:["It lowers blood calcium by preventing bone resorption.","It directly lowers intestinal calcium uptake.","It prevents calcium reabsorption by the kidney."]},
+  {lvl:"Level 2 — Medium", q:"Why is calcium particularly important during pregnancy?", correct:"It is needed for fetal skeletal development and calcium-rich breast milk production.", wrong:["It prevents all forms of hypertension.","It eliminates the need for dietary intake.","It prevents magnesium loss."]},
+  {lvl:"Level 2 — Medium", q:"Which statement correctly describes the relationship between calcium intake and kidney stones according to the lecture?", correct:"Low calcium intake increases the risk of calcium oxalate stones.", wrong:["Low calcium intake decreases oxalate absorption.","Calcium supplements always increase kidney stones.","Calcium intake has no relationship to stone recurrence."]},
+  {lvl:"Level 2 — Medium", q:"Why can low dietary calcium increase calcium oxalate stone risk?", correct:"It increases oxalate absorption.", wrong:["It prevents phosphate excretion.","It increases magnesium absorption.","It completely blocks intestinal absorption."]},
+  {lvl:"Level 2 — Medium", q:"A patient with severe acute hypocalcemia requires treatment. Which intervention is specifically stated?", correct:"Slow IV injection of 10% calcium gluconate with monitoring", wrong:["Oral calcium carbonate without monitoring","IV magnesium hydroxide","Calcium carbonate taken without food"]},
+  {lvl:"Level 2 — Medium", q:"A 1000-mg dose of calcium carbonate provides approximately how much elemental calcium?", correct:"400 mg", wrong:["100 mg","200 mg","800 mg"]},
+  {lvl:"Level 2 — Medium", q:"Why should calcium carbonate be taken with food?", correct:"Its absorption is pH-dependent and is improved with food.", wrong:["Food makes calcium carbonate radioactive.","Food prevents all calcium excretion.","Food converts it into magnesium carbonate."]},
+
+  // ---------- LEVEL 3 — HARD (10) ----------
+  {lvl:"Level 3 — Hard", q:"A patient with chronic kidney failure develops low blood calcium. According to the mechanism presented in the lecture, which sequence best explains the development of the mineral imbalance?", correct:"Reduced calcitriol → reduced calcium absorption → hypocalcemia; simultaneously phosphate accumulates and binds available calcium → PTH-mediated bone resorption", wrong:["Increased calcitriol → increased calcium absorption → hypercalcemia → bone formation","Increased calcitriol → reduced phosphate → hypocalcemia → reduced PTH","Reduced calcitriol → increased calcium absorption → hypercalcemia → reduced bone resorption"]},
+  {lvl:"Level 3 — Hard", q:"Which combination best explains why the skeleton is important in calcium homeostasis?", correct:"It stores calcium and serves as a reservoir, while PTH can increase bone resorption when blood calcium falls.", wrong:["It prevents all calcium from entering the blood.","It contains only 1% of total body calcium and has no regulatory role.","It produces calcium independently of hormonal control."]},
+  {lvl:"Level 3 — Hard", q:"A patient has renal impairment and requires magnesium supplementation. Which reasoning from the lecture is most appropriate?", correct:"The dose should be reduced because impaired kidneys may compromise the primary route of magnesium excretion.", wrong:["The dose should be increased because renal impairment enhances magnesium excretion.","Magnesium should never be used because it is absorbed exclusively by the kidneys.","Magnesium is unaffected by renal function."]},
+  {lvl:"Level 3 — Hard", q:"A patient takes an antacid containing magnesium salts together with several medications. Which clinical reasoning best follows the lecture?", correct:"The patient’s medication history and timing should be reviewed because magnesium salts can reduce absorption of several concurrently taken drugs.", wrong:["Timing is irrelevant because magnesium salts cannot interact with medications.","Magnesium always increases absorption of antibiotics.","Magnesium salts only interact with calcium supplements."]},
+  {lvl:"Level 3 — Hard", q:"A patient with a history of calcium oxalate kidney stones believes that avoiding dietary calcium will prevent recurrence. Based strictly on the lecture, which response is most consistent?", correct:"Low calcium intake may increase calcium oxalate stone risk because it increases oxalate absorption; higher calcium intake may reduce recurrence.", wrong:["Low calcium intake is protective because it decreases oxalate absorption.","Calcium has no relationship to calcium oxalate stones.","Calcium supplements always increase stone recurrence in healthy people."]},
+  {lvl:"Level 3 — Hard", q:"Which combination correctly connects calcium’s physiological role with its cardiovascular relevance?", correct:"Calcium participates in smooth muscle contraction; higher calcium levels can reduce vasoconstrictor tone and sympathetic nervous system activity.", wrong:["Calcium prevents all smooth muscle contraction and therefore lowers blood pressure directly.","Calcium only functions in bone and has no role in blood pressure regulation.","Calcium increases vasoconstrictor tone and sympathetic activity according to the lecture."]},
+  {lvl:"Level 3 — Hard", q:"Why is calcium intake emphasized during the first decades of life in relation to osteoporosis?", correct:"Adequate calcium intake helps build peak bone density and can slow age-related bone loss.", wrong:["Calcium completely reverses established bone loss.","Calcium prevents the body from storing minerals in bones.","Calcium supplementation is presented as the only treatment for osteoporosis."]},
+  {lvl:"Level 3 — Hard", q:"A patient takes calcium carbonate and complains of gas and bloating. Which explanation and management combination is supported by the lecture?", correct:"The symptoms result from CO₂ production after reaction with stomach acid; taking it with food improves absorption, and magnesium salts may help with constipation.", wrong:["The symptoms result from radioactive calcium; calcium carbonate should be replaced with magnesium sulfate.","The symptoms result from phosphate accumulation; the patient should stop all calcium.","Calcium carbonate is absorbed independently of pH, so food has no relevance."]},
+  {lvl:"Level 3 — Hard", q:"Which sequence best connects chronic kidney failure to renal osteodystrophy as presented in the lecture?", correct:"Kidney failure → reduced activation of vitamin D → low calcitriol → poor calcium absorption and phosphate accumulation → reduced active calcium → PTH-mediated bone resorption", wrong:["Kidney failure → increased vitamin D activation → increased calcium absorption → stronger bones","Kidney failure → increased phosphate excretion → high calcium → bone formation","Kidney failure → increased calcitriol → low phosphate → bone resorption"]},
+  {lvl:"Level 3 — Hard", q:"A student compares magnesium and calcium regulation based on the lecture. Which statement demonstrates the most accurate integration of the material?", correct:"Magnesium is strongly associated with enzymatic processes, ATP activation, nucleic acid stability, and chlorophyll, whereas calcium has major roles in bone/teeth, cellular signaling, muscle contraction, and calcium homeostasis.", wrong:["Both minerals are primarily stored in exactly the same tissues and have identical physiological functions.","Calcium’s only function is skeletal mineralization, whereas magnesium has no clinical applications.","Magnesium and calcium are both primarily regulated by PTH in exactly the same manner."]},
 ];
 
 let userAnswers = {};
@@ -909,7 +916,7 @@ function shuffle(arr){
 
 function buildQuiz(){
   userAnswers = {};
-  const items = shuffle(quizBank.filter(it=>it.lvl===currentQuizLevel));
+  const items = quizBank.filter(it=>it.lvl===currentQuizLevel);
   document.getElementById('quizCount').textContent = items.length + ' questions';
   quizList.innerHTML = items.map((item,qi)=>{
     const opts = shuffle([item.correct, ...item.wrong]);
